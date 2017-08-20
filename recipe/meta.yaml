@@ -27,19 +27,21 @@ build:
 
 requirements:
   build:
+    - {{ compiler('c') }}
     - python
     - pkg-config
+  host:
     - libffi >=3.0.0
-    - gettext
+    - gettext         # [not linux]
     - zlib 1.2.*
     - pcre
-    - libiconv
+    - libiconv        # [not linux and not win]
   run:
     - libffi >=3.0.0
-    - gettext
+    - gettext         # [not linux]
     - zlib 1.2.*
     - pcre
-    - libiconv
+    - libiconv        # [not linux and not win]
 
 test:
   commands:
@@ -57,6 +59,7 @@ extra:
   recipe-maintainers:
     - ccordoba12
     - jakirkham
+    - mingwandroid
     - scopatz
     - ocefpaf
     - pkgw
