@@ -1,6 +1,6 @@
-{% set major_minor = "2.51" %}
-{% set version = major_minor + ".4" %}
-{% set sha256 = "7c4247dfb2e8d5b596018f00ea8c05e76077a3f0bfcc07dda4492708f552c23e" %}
+{% set major_minor = "2.53" %}
+{% set version = major_minor + ".6" %}
+{% set sha256 = "e01296a9119c09d2dccb37ad09f5eaa1e0c5570a473d8fed04fc759ace6fb6cc" %}
 
 package:
   name: glib
