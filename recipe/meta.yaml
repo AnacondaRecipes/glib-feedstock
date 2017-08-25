@@ -33,13 +33,12 @@ requirements:
   host:
     - libffi >=3.0.0
     - gettext         # [not linux]
-    - zlib 1.2.*
+    - zlib
     - pcre
     - libiconv        # [not linux and not win]
   run:
     - libffi >=3.0.0
     - gettext         # [not linux]
-    - zlib 1.2.*
     - pcre
     - libiconv        # [not linux and not win]
 
