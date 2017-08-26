@@ -21,9 +21,13 @@ source:
     - no_fileutils_test.patch
 
 build:
-  number: 0
-  skip: True  # [win or not py36]
-  detect_binary_files_with_prefix: True
+<<<<<<< HEAD
+  number: 1
+  skip: true  # [win]
+  run_exports:
+    # remove symbols at minor versions.
+    #    https://abi-laboratory.pro/tracker/timeline/glib/
+    - {{ pin_subpackage('glib', max_pin='x.x') }}
 
 requirements:
   build:
