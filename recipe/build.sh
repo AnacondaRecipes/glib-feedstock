@@ -24,7 +24,7 @@ fi
             --disable-libmount \
                 || { cat config.log; exit 1; }
 
-make -j${CPU_COUNT} V=1
+make -j${CPU_COUNT} ${VERBOSE_AT}
 # FIXME
 # ERROR: fileutils - too few tests run (expected 15, got 14)
 # ERROR: fileutils - exited with status 134 (terminated by signal 6?)
