@@ -21,7 +21,6 @@ source:
     - no_fileutils_test.patch
 
 build:
-<<<<<<< HEAD
   number: 1
   skip: true  # [win]
   run_exports:
