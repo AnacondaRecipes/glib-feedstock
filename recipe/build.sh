@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
 if [[ ${HOST} =~ .*darwin.* ]]; then
-  # Need to get appropriate response to g_get_system_data_dirs()
-  # See the hardcoded-paths.patch file
-  export CFLAGS="$CFLAGS -DCONDA_PREFIX=\\\"${PREFIX}\\\""
-  LIBICONV=gnu
+    LIBICONV=gnu
+    # Need to get appropriate response to g_get_system_data_dirs()
+    # See the hardcoded-paths.patch file
+    export CFLAGS="$CFLAGS -I$PREFIX/include -DCONDA_PREFIX=\\\"${PREFIX}\\\""
+    export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include"
+    export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib -Wl,-rpath,${PREFIX}/lib"
 elif [[ ${HOST} =~ .*linux.* ]]; then
-  # So the system (builtin to glibc) iconv gets found and used.
-  LIBICONV=maybe
-  export PATH="$PATH:$PREFIX/$HOST/sysroot/usr/bin"
+    # So the system (builtin to glibc) iconv gets found and used.
+    LIBICONV=maybe
+    export PATH="$PATH:$PREFIX/$HOST/sysroot/usr/bin"
 fi
 
 # A full path to PYTHON causes overly long shebang in gobject/glib-genmarshal
