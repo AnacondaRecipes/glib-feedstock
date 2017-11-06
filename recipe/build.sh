@@ -25,3 +25,7 @@ make -j${CPU_COUNT} ${VERBOSE_AT}
 # ERROR: fileutils - exited with status 134 (terminated by signal 6?)
 # make check
 make install
+
+# gdb folder has a nested folder structure similar to our host prefix (255 chars) which causes installation issues
+#    so kill it.
+rm -rf $PREFIX/share/gdb

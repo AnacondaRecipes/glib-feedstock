@@ -21,7 +21,7 @@ source:
     - hardcoded-paths.patch  # [osx]
 
 build:
-  number: 1
+  number: 2
   skip: true  # [win]
   detect_binary_files_with_prefix: true
   run_exports:
