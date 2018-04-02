@@ -1,6 +1,6 @@
-{% set major_minor = "2.53" %}
-{% set version = major_minor + ".6" %}
-{% set sha256 = "e01296a9119c09d2dccb37ad09f5eaa1e0c5570a473d8fed04fc759ace6fb6cc" %}
+{% set major_minor = "2.56" %}
+{% set version = major_minor + ".0" %}
+{% set sha256 = "ecef6e17e97b8d9150d0e8a4b3edee1ac37331213b8a2a87a083deea408a0fc7" %}
 
 package:
   name: glib
@@ -19,9 +19,10 @@ source:
     # https://github.com/Homebrew/legacy-homebrew/blob/21ce7a56cb3fc40fe93d731cc654c69268796772/Library/Formula/glib.rb#L33-L39
     #
     - hardcoded-paths.patch  # [osx]
+    - 0001-F_SETPIPE_SZ-absence-workaround.patch
 
 build:
-  number: 2
+  number: 0
   skip: true  # [win]
   detect_binary_files_with_prefix: true
   run_exports:
@@ -34,6 +35,9 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ cdt('gettext-devel') }}  # [linux]
+    # gettext here is so that msgfmt is on PATH, which is required for the configure tests
+    - gettext                     # [linux]
+    - make
     - python
     - pkg-config
   host:
@@ -43,10 +47,7 @@ requirements:
     - pcre
     - libiconv        # [not linux and not win]
   run:
-    - libffi >=3.0.0
-    - gettext         # [not linux]
     - pcre
-    - libiconv        # [not linux and not win]
 
 test:
   commands:
@@ -76,3 +77,4 @@ extra:
     - scopatz
     - ocefpaf
     - pkgw
+    - msarahan
