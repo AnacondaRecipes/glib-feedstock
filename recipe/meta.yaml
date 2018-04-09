@@ -19,10 +19,10 @@ source:
     # https://github.com/Homebrew/legacy-homebrew/blob/21ce7a56cb3fc40fe93d731cc654c69268796772/Library/Formula/glib.rb#L33-L39
     #
     - hardcoded-paths.patch  # [osx]
-    - 0001-F_SETPIPE_SZ-absence-workaround.patch
+    - 0001-Revert-Stop-using-ptrctl-for-thread-names.patch
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
   detect_binary_files_with_prefix: true
   run_exports:
@@ -35,6 +35,9 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ cdt('gettext-devel') }}  # [linux]
+    - automake
+    - autoconf
+
     # gettext here is so that msgfmt is on PATH, which is required for the configure tests
     - gettext                     # [linux]
     - make
@@ -53,8 +56,6 @@ test:
   commands:
     - test -f ${PREFIX}/lib/libglib-2.0.so  # [linux]
     - test -f ${PREFIX}/lib/libglib-2.0.dylib  # [osx]
-    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
-    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
 
 about:
   home: https://developer.gnome.org/glib/

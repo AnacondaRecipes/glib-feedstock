@@ -13,6 +13,8 @@ elif [[ ${HOST} =~ .*linux.* ]]; then
     export PATH="$PATH:$PREFIX/$HOST/sysroot/usr/bin"
 fi
 
+autoreconf -vfi
+
 # A full path to PYTHON causes overly long shebang in gobject/glib-genmarshal
 ./configure --prefix=${PREFIX} \
             --host=$HOST \
@@ -25,7 +27,7 @@ make -j${CPU_COUNT} ${VERBOSE_AT}
 # FIXME
 # ERROR: fileutils - too few tests run (expected 15, got 14)
 # ERROR: fileutils - exited with status 134 (terminated by signal 6?)
-# make check
+make check
 make install
 
 # gdb folder has a nested folder structure similar to our host prefix (255 chars) which causes installation issues
