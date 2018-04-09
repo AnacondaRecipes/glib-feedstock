@@ -20,10 +20,10 @@ source:
     # Not sure why test_stdio_wrappers do not pass, skipping it for now.
     - no_fileutils_test.patch
     - hardcoded-paths.patch  # [osx]
-    - 0001-F_SETPIPE_SZ-absence-workaround.patch
+    - 0001-Revert-Stop-using-ptrctl-for-thread-names.patch
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
   run_exports:
     # remove symbols at minor versions.
@@ -35,6 +35,9 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ cdt('gettext-devel') }}  # [linux]
+    - automake
+    - autoconf
+
     # gettext here is so that msgfmt is on PATH, which is required for the configure tests
     - gettext                     # [linux]
     - make
@@ -52,8 +55,6 @@ requirements:
 test:
   commands:
     - test -f ${PREFIX}/lib/libglib-2.0{{ SHLIB_EXT }}  # [not win]
-    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
-    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
 
 about:
   home: https://developer.gnome.org/glib/

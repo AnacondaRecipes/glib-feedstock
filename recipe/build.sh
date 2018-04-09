@@ -13,6 +13,8 @@ elif [[ ${HOST} =~ .*linux.* ]]; then
     export PATH="$PATH:$PREFIX/$HOST/sysroot/usr/bin"
 fi
 
+autoreconf -vfi
+
 # A full path to PYTHON causes overly long shebang in gobject/glib-genmarshal
 ./configure --prefix=${PREFIX} \
             --host=$HOST \
