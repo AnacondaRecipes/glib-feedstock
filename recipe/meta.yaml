@@ -1,5 +1,5 @@
 {% set major_minor = "2.56" %}
-{% set version = major_minor + ".0" %}
+{% set version = major_minor + ".1" %}
 {% set sha256 = "ecef6e17e97b8d9150d0e8a4b3edee1ac37331213b8a2a87a083deea408a0fc7" %}
 
 package:
@@ -23,7 +23,7 @@ source:
     - 0001-Revert-Stop-using-ptrctl-for-thread-names.patch
 
 build:
-  number: 1
+  number: 0
   skip: true  # [win]
   detect_binary_files_with_prefix: true
   run_exports:
