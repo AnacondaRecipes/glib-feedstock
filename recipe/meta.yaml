@@ -20,6 +20,7 @@ source:
     # Not sure why test_stdio_wrappers do not pass, skipping it for now.
     - no_fileutils_test.patch
     - hardcoded-paths.patch  # [osx]
+    - 0001-F_SETPIPE_SZ-absence-workaround.patch
     - 0001-Revert-Stop-using-ptrctl-for-thread-names.patch
 
 build:
