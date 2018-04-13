@@ -30,6 +30,8 @@ build:
     # remove symbols at minor versions.
     #    https://abi-laboratory.pro/tracker/timeline/glib/
     - {{ pin_subpackage('glib', max_pin='x.x') }}
+  missing_dso_whitelist:          # [osx]
+    - /usr/lib/libresolv.9.dylib  # [osx]
 
 requirements:
   build:
