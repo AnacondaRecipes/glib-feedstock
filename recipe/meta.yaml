@@ -38,6 +38,7 @@ requirements:
     - {{ cdt('gettext-devel') }}  # [linux]
     - automake
     - autoconf
+    - libtool
 
     # gettext here is so that msgfmt is on PATH, which is required for the configure tests
     - gettext                     # [linux]
