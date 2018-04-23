@@ -1,0 +1,14 @@
+VERBOSE_AT:
+- V=1
+c_compiler:
+- gcc
+cxx_compiler:
+- gxx
+glib:
+- '2.55'
+libffi:
+- '3.2'
+libiconv:
+- '1.15'
+zlib:
+- '1.2'
