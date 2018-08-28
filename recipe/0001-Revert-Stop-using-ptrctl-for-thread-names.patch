@@ -1,7 +1,8 @@
-diff -urN work.orig/configure.ac work/configure.ac
---- work.orig/configure.ac	2018-04-09 03:58:33.000000000 -0400
-+++ work/configure.ac	2018-04-09 03:59:23.000000000 -0400
-@@ -709,7 +709,7 @@
+diff --git a/configure.ac b/configure.ac
+index fb07249..cb79e96 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -687,7 +687,7 @@ AC_CHECK_HEADERS([sys/param.h sys/resource.h mach/mach_time.h])
  AC_CHECK_HEADERS([sys/select.h stdint.h inttypes.h sched.h malloc.h])
  AC_CHECK_HEADERS([sys/vfs.h sys/vmount.h sys/statfs.h sys/statvfs.h sys/filio.h])
  AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h fstab.h])
@@ -10,9 +11,10 @@ diff -urN work.orig/configure.ac work/configure.ac
  AC_CHECK_HEADERS([termios.h])
  
  # Some versions of MSC lack these
-diff -urN work.orig/glib/gthread-posix.c work/glib/gthread-posix.c
---- work.orig/glib/gthread-posix.c	2018-04-09 03:58:33.000000000 -0400
-+++ work/glib/gthread-posix.c	2018-04-09 03:58:45.000000000 -0400
+diff --git a/glib/gthread-posix.c b/glib/gthread-posix.c
+index 5fff514..7bbd0a9 100644
+--- a/glib/gthread-posix.c
++++ b/glib/gthread-posix.c
 @@ -60,6 +60,9 @@
  #ifdef HAVE_SCHED_H
  #include <sched.h>
@@ -23,7 +25,7 @@ diff -urN work.orig/glib/gthread-posix.c work/glib/gthread-posix.c
  #ifdef G_OS_WIN32
  #include <windows.h>
  #endif
-@@ -1225,10 +1228,12 @@
+@@ -1232,10 +1235,12 @@ g_system_thread_exit (void)
  void
  g_system_thread_set_name (const gchar *name)
  {
@@ -39,14 +41,15 @@ diff -urN work.orig/glib/gthread-posix.c work/glib/gthread-posix.c
  #endif
  }
  
-diff -urN work.orig/glib/tests/thread.c work/glib/tests/thread.c
---- work.orig/glib/tests/thread.c	2018-04-09 03:58:33.000000000 -0400
-+++ work/glib/tests/thread.c	2018-04-09 03:58:45.000000000 -0400
-@@ -174,12 +174,14 @@
+diff --git a/glib/tests/thread.c b/glib/tests/thread.c
+index a79b951..4f754c2 100644
+--- a/glib/tests/thread.c
++++ b/glib/tests/thread.c
+@@ -174,12 +174,14 @@ test_thread5 (void)
  static gpointer
  thread6_func (gpointer data)
  {
--#ifdef HAVE_PTHREAD_SETNAME_NP_WITH_TID
+-#if defined (HAVE_PTHREAD_SETNAME_NP_WITH_TID) && defined (HAVE_PTHREAD_GETNAME_NP)
 -  char name[16];
 +#ifdef HAVE_SYS_PRCTL_H
 +#ifdef PR_GET_NAME
