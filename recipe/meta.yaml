@@ -26,6 +26,7 @@ source:
 build:
   number: 0
   skip: True  # [not py36]
+  skip: True  # [win]
   missing_dso_whitelist:          # [osx]
     - /usr/lib/libresolv.9.dylib  # [osx]
   run_exports:
