@@ -24,7 +24,7 @@ source:
     - patches/0005-Increase-some-test-timeouts.patch                  # [win]
 
 build:
-  number: 0
+  number: 1
   skip: True  # [not py36]
   skip: True  # [win]
   missing_dso_whitelist:          # [osx]
@@ -42,7 +42,7 @@ requirements:
   host:
     - meson
     - python
-    - libffi
+    - libffi {{ libffi }}
     - gettext   # [osx]
     - zlib
     - pcre
