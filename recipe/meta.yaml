@@ -1,5 +1,5 @@
-{% set major_minor = "2.63" %}
-{% set version = major_minor + ".1" %}
+{% set version = "2.65.0" %}
+{% set major_minor = ".".join(version.split(".")[:2]) %}
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 
@@ -9,7 +9,7 @@ package:
 
 source:
   url: http://ftp.gnome.org/pub/GNOME/sources/glib/{{ major_minor }}/glib-{{ version }}.tar.xz
-  sha256: 6bd00b8e410501f0fb76078b970b8d1bcb290507f1c02288dee2b3a75c2fa082
+  sha256: b041e63cd0ac1fccb486374022ade040d907aad29b278e27d9e43e9294a6e7a3
   patches:
     # Related to this patch https://bugzilla.gnome.org/show_bug.cgi?id=673135
     # However, it was rejected by upstream. Homebrew decided to keep their own
@@ -18,13 +18,14 @@ source:
     #
     # https://github.com/Homebrew/legacy-homebrew/blob/21ce7a56cb3fc40fe93d731cc654c69268796772/Library/Formula/glib.rb#L33-L39
     - patches/0001-replace-hardcoded-paths.patch
-    - patches/0002-skip-fileutils-tests.patch
+    #- patches/0001-Manually-link-with-libiconv-whenever-we-use-libintl.patch  # [win]
+    - patches/0002-skip-some-tests.patch
     - patches/0003-add-install_rpath-to-meson-build-files.patch
     - patches/0004-Attempt-to-mask-out-qemu-failing-tests.patch       # [ppc64le or aarch64]
     - patches/0005-Increase-some-test-timeouts.patch                  # [win]
 
 build:
-  number: 1
+  number: 0
   skip: True  # [not py36]
   skip: True  # [win]
   missing_dso_whitelist:          # [osx]
@@ -34,15 +35,15 @@ build:
 
 requirements:
   build:
-    - {{posix}}patch  # [win]
+    - {{ posix }}patch  # [win]
+    - meson
     - ninja
-    - {{native}}pkg-config
+    - {{ native }}pkg-config
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - meson
     - python
-    - libffi {{ libffi }}
+    - libffi
     - gettext   # [osx]
     - zlib
     - pcre
@@ -91,3 +92,5 @@ extra:
     - scopatz
     - ocefpaf
     - pkgw
+    - isuruf
+    - chenghlee

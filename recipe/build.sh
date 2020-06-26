@@ -19,10 +19,10 @@ fi
 _PY=$PYTHON
 export PYTHON="python"
 
-mkdir forgebuild
+mkdir -p forgebuild
 cd forgebuild
 meson --buildtype=release --prefix="$PREFIX" --backend=ninja -Dlibdir=lib \
-      -Diconv=$iconv_arg -Dlibmount=false -Dselinux=disabled -Dxattr=false ..
+      -Diconv=$iconv_arg -Dlibmount=disabled -Dselinux=disabled -Dxattr=false ..
 ninja -j${CPU_COUNT} -v
 
 if [ "${target_platform}" == 'linux-aarch64' ] || [ "${target_platform}" == "linux-ppc64le" ]; then
