@@ -25,8 +25,10 @@ source:
     - patches/0005-Increase-some-test-timeouts.patch                  # [win]
 
 build:
-  number: 0
-  skip: True  # [not py36]
+  number: 1
+  # Python is only ever needed for the build process, so use this next `skip`
+  # statement to avoid redudant builds caused by any cbc.yaml.
+  skip: True  # [py!=38]
   skip: True  # [win]
   missing_dso_whitelist:          # [osx]
     - /usr/lib/libresolv.9.dylib  # [osx]
