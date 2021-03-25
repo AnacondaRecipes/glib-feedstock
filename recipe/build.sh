@@ -14,6 +14,11 @@ else
     ln -s ${OBJCOPY} ${BUILD_PREFIX}/bin/objcopy
 fi
 
+# There are a couple of places in the source that hardcode a system prefix;
+# in hardcoded-paths.patch we edit them to refer to the Conda prefix so
+# that they will get appropriately rewritten.
+export CPPFLAGS="$CPPFLAGS -DCONDA_PREFIX=\\\"${PREFIX}\\\""
+
 # @PYTHON@ is used in the build scripts and that breaks with the long prefix.
 # we need to redefine that to `python`.
 _PY=$PYTHON
@@ -22,7 +27,8 @@ export PYTHON="python"
 mkdir -p forgebuild
 cd forgebuild
 meson --buildtype=release --prefix="$PREFIX" --backend=ninja -Dlibdir=lib \
-      -Diconv=$iconv_arg -Dlibmount=disabled -Dselinux=disabled -Dxattr=false ..
+      -Diconv=$iconv_arg -Dlibmount=disabled -Dselinux=disabled -Dxattr=false \
+      -Dlocalstatedir="${PREFIX}/var" ..
 ninja -j${CPU_COUNT} -v
 
 if [ "${target_platform}" == 'linux-aarch64' ] || [ "${target_platform}" == "linux-ppc64le" ]; then
