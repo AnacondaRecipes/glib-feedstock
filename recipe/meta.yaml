@@ -75,7 +75,7 @@ test:
 
 about:
   home: https://developer.gnome.org/glib/
-  license: LGPL-2.1
+  license: LGPL-2.1-or-later
   license_family: LGPL
   license_file: COPYING
   summary: 'Provides core application building blocks for libraries and applications written in C.'
