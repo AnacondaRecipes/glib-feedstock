@@ -39,8 +39,8 @@ build:
 requirements:
   build:
     - {{ posix }}patch  # [win]
-    # - meson 0.53.2
-    - meson
+    - meson 0.53.2  # [win]
+    - meson  # [not win]
     - ninja
     - {{ native }}pkg-config
     - {{ compiler('c') }}
