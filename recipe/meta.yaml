@@ -29,34 +29,38 @@ build:
   # Python is only ever needed for the build process, so use this next `skip`
   # statement to avoid redudant builds caused by any cbc.yaml.
   skip: True  # [py!=38]
-  skip: True  # [win]
+  skip: True  # [win and vc<14]
   missing_dso_whitelist:          # [osx]
     - /usr/lib/libresolv.9.dylib  # [osx]
   run_exports:
     - {{ pin_subpackage('glib') }}
-
+  ignore_run_exports:
+    - libffi  # [win]
 requirements:
   build:
     - {{ posix }}patch  # [win]
-    - meson
+    - meson 0.53.2  # [win]
+    - meson  # [not win]
     - ninja
     - {{ native }}pkg-config
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - patch
+    - patch  # [unix]
+    - setuptools
+    - python
   host:
     - python
     - libffi
     - gettext   # [osx]
     - zlib
     - pcre
-    - libiconv  # [osx]
+    - libiconv  # [osx or win]
   run:
     - libffi
     - gettext   # [osx]
     - zlib
     - pcre
-    - libiconv  # [osx]
+    - libiconv  # [osx or win]
 
 test:
   commands:
