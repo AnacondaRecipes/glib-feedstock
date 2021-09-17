@@ -31,7 +31,7 @@ meson --buildtype=release --prefix="$PREFIX" --backend=ninja -Dlibdir=lib \
       -Dlocalstatedir="${PREFIX}/var" ..
 ninja -j${CPU_COUNT} -v
 
-if [ "${target_platform}" == 'linux-aarch64' ] || [ "${target_platform}" == "linux-ppc64le" || [ "${target_platform}" == "linux-s390x" ] ]; then
+if [ "${target_platform}" == 'linux-aarch64' ] || [ "${target_platform}" == "linux-ppc64le"  ] || [ "${target_platform}" == "linux-s390x" ]; then
     export MESON_TEST_TIMEOUT_MULTIPLIER=32
 else
     export MESON_TEST_TIMEOUT_MULTIPLIER=8
