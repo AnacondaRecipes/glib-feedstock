@@ -28,7 +28,7 @@ build:
   number: 0
   # Python is only ever needed for the build process, so use this next `skip`
   # statement to avoid redudant builds caused by any cbc.yaml.
-  skip: True  # [py<36]
+  skip: True  # [py!=38]
   skip: True  # [win and vc<14]
   missing_dso_whitelist:          # [osx]
     - /usr/lib/libresolv.9.dylib  # [osx]
