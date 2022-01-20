@@ -52,7 +52,7 @@ requirements:
     - python
     - libffi >=3.3  # [not win]
     # code is incompatible to newer libffi headers
-    - libffi <3,3   # [win]
+    - libffi <3.3   # [win]
     - gettext   # [osx]
     - zlib
     - pcre
