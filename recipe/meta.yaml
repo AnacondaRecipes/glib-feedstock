@@ -25,7 +25,7 @@ source:
     - patches/0005-Increase-some-test-timeouts.patch                  # [win]
 
 build:
-  number: 0
+  number: 1
   # Python is only ever needed for the build process, so use this next `skip`
   # statement to avoid redudant builds caused by any cbc.yaml.
   skip: True  # [py!=38]
@@ -49,13 +49,13 @@ requirements:
     - python
   host:
     - python
-    - libffi
+    - libffi >={{ libffi }}
     - gettext   # [osx]
     - zlib
     - pcre
     - libiconv  # [osx or win]
   run:
-    - libffi
+    - libffi >={{ libffi }}
     - gettext   # [osx]
     - zlib
     - pcre
