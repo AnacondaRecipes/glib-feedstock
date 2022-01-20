@@ -12,7 +12,7 @@ mkdir forgebuild
 cd forgebuild
 
 @REM Find libffi with pkg-config
-rem FOR /F "delims=" %%i IN ('cygpath.exe -m "%LIBRARY_PREFIX%"') DO set "LIBRARY_PREFIX_M=%%i"
+FOR /F "delims=" %%i IN ('cygpath.exe -m "%LIBRARY_PREFIX%"') DO set "LIBRARY_PREFIX_M=%%i"
 set PKG_CONFIG_PATH=%LIBRARY_PREFIX_M%/lib/pkgconfig;%LIBRARY_PREFIX_M%/share/pkgconfi
 
 @REM Avoid a Meson issue - https://github.com/mesonbuild/meson/issues/4827
