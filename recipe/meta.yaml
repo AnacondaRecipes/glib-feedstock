@@ -47,6 +47,8 @@ requirements:
     - {{ compiler('cxx') }}
     - setuptools
     - python
+    - patch  # [not win]
+    - m2-patch  # [win]
   host:
     - python
     - libffi >={{ libffi }}
