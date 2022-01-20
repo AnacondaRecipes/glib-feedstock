@@ -51,13 +51,13 @@ requirements:
     - m2-patch  # [win]
   host:
     - python
-    - libffi >={{ libffi }}
+    - libffi >=3.3
     - gettext   # [osx]
     - zlib
     - pcre
     - libiconv  # [osx or win]
   run:
-    - libffi >={{ libffi }}
+    - libffi >=3.3
     - gettext   # [osx]
     - zlib
     - pcre
