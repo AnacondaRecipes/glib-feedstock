@@ -26,10 +26,4 @@ else
     export MESON_TEST_TIMEOUT_MULTIPLIER=8
 fi
 
-if [ "${target_platform}" == 'linux-aarch64' ] || [ "${target_platform}" == "linux-s390x" ] || [ "${target_platform}" == 'linux-ppc64le' ];
- then
-    # 163/254 glib:gio / resources will fail on aarch64 and s390x
-    meson test --no-suite flaky --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER} || true
-elif [[ $(uname) != Darwin ]] ; then  # too many tests fail on macOS
-    meson test --no-suite flaky --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER}
-fi
+meson test --no-suite flaky --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER}
