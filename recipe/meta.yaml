@@ -41,7 +41,7 @@ requirements:
     - setuptools
   host:
     - libffi {{ libffi }}
-    - gettext 0.21.0
+    - gettext 0.21.0  # [osx]
     - zlib {{ zlib }}
     - pcre2 10.42
     - libiconv 1.16
@@ -65,12 +65,12 @@ outputs:
         - setuptools
       host:
         - libffi {{ libffi }}
-        - gettext 0.21.0
+        - gettext 0.21.0  # [osx]
         - zlib {{ zlib }}
         - pcre2 10.42
         - libiconv 1.16
       run:
-        - gettext >=0.21.0,<1.0a0
+        - gettext >=0.21.0,<1.0a0  # [osx]
         # bounds through run_exports
         - libffi
         - zlib
@@ -102,12 +102,12 @@ outputs:
         - {{ compiler('cxx') }}
         - python >=3.5
         - setuptools
-        - gettext 0.21.0
+        - gettext 0.21.0  # [osx]
       host:
         - {{ pin_subpackage("libglib", exact=True) }}
       run:
         - {{ pin_subpackage("libglib", exact=True) }}
-        - gettext >=0.21.0,<1.0a0
+        - gettext >=0.21.0,<1.0a0  # [osx]
     test:
       commands:
         # Check that binaries can run -- instigated by Meson Linux rpath issue
@@ -136,10 +136,10 @@ outputs:
       host:
         - {{ pin_subpackage("libglib", exact=True) }}
         - {{ pin_subpackage("glib-tools", exact=True) }}
-        - gettext 0.21.0
+        - gettext 0.21.0  # [osx]
       run:
         - python
-        - gettext >=0.21.0,<1.0a0
+        - gettext >=0.21.0,<1.0a0  # [osx]
         - {{ pin_subpackage("libglib", exact=True) }}
         - {{ pin_subpackage("glib-tools", exact=True) }}
     test:
