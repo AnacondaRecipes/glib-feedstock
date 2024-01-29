@@ -26,4 +26,5 @@ else
     export MESON_TEST_TIMEOUT_MULTIPLIER=8
 fi
 
-meson test --no-suite flaky --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER}
+meson test --no-suite flaky --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER} \
+    || { cat meson-logs/testlog.txt ; exit 1 ; }

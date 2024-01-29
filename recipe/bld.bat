@@ -23,10 +23,16 @@ set "PYTHONIOENCODING=UTF-8"
 set "CPPFLAGS=%CPPFLAGS% -D^"%LIBRARY_PREFIX_M%^""
 
 meson setup --buildtype=release --prefix="%LIBRARY_PREFIX_M%" --backend=ninja -Dselinux=disabled -Dxattr=false -Dlibmount=disabled ..
-if errorlevel 1 exit 1
+if errorlevel 1 (
+  type forgebuild\meson-logs\meson-log.txt
+  exit /b 1
+)
 
 ninja -v
 if errorlevel 1 exit 1
 
 ninja test
-if errorlevel 1 exit 1
+if errorlevel 1 (
+  type forgebuild\meson-logs\testlog.txt
+  exit /b 1
+)

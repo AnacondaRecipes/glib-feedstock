@@ -20,7 +20,10 @@ source:
     - patches/0001-replace-hardcoded-paths.patch
     - patches/0002-Manually-link-with-libiconv-whenever-we-use-libintl.patch  # [win]
     - patches/0004-Attempt-to-mask-out-qemu-failing-tests.patch       # [ppc64le or aarch64]
-    - patches/0005-Increase-some-test-timeouts.patch                  # [win]
+    - patches/0006-correct-osx-tests-skips.patch
+    - patches/0007-win-pkgconfig-test-bash-friendly.patch # [win]
+    - patches/0008-skip-tests-needing-system-utils.patch # [linux]
+    - patches/0009-s390x-skip-locale-check.patch # [s390x]
 
 build:
   number: 0
@@ -83,6 +86,8 @@ outputs:
       commands:
         - test -f ${PREFIX}/lib/libglib-2.0.0{{ SHLIB_EXT }}  # [osx]
         - test -f ${PREFIX}/lib/libglib-2.0{{ SHLIB_EXT }}.0  # [linux]
+        - if not exist "%LIBRARY_BIN%\\glib-2.0-0.dll" exit 1 # [win]
+        - if not exist "%LIBRARY_LIB%\\glib-2.0.lib" exit 1   # [win]
         - test ! -f ${PREFIX}/lib/libgobject-2.0.la  # [not win]
         - test ! -f ${PREFIX}/lib/libglib-2.0${SHLIB_EXT}  # [not win]
         - test -f ${PREFIX}/lib/pkgconfig/glib-2.0.pc  # [unix]
