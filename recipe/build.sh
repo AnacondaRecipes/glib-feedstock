@@ -11,7 +11,6 @@ export CPPFLAGS="$CPPFLAGS -DCONDA_PREFIX=\\\"${PREFIX}\\\""
 # we need to redefine that to `python`.
 _PY=$PYTHON
 export PYTHON="python"
-unset _CONDA_PYTHON_SYSCONFIGDATA_NAME
 
 mkdir -p forgebuild
 cd forgebuild
