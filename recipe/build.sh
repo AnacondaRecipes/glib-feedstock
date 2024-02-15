@@ -11,6 +11,8 @@ export CPPFLAGS="$CPPFLAGS -DCONDA_PREFIX=\\\"${PREFIX}\\\""
 # we need to redefine that to `python`.
 _PY=$PYTHON
 export PYTHON="python"
+
+# see for context: https://github.com/conda-forge/glib-feedstock/pull/72 https://github.com/conda-forge/python-feedstock/issues/474
 unset _CONDA_PYTHON_SYSCONFIGDATA_NAME
 
 mkdir -p forgebuild
