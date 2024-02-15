@@ -1,73 +1,71 @@
-About glib
-==========
+About glib-feedstock
+====================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/glib-feedstock/blob/main/LICENSE.txt)
 
 Home: https://developer.gnome.org/glib/
 
-Package license: LGPL-2.1
-
-Feedstock license: BSD 3-Clause
+Package license: LGPL-2.1-or-later
 
 Summary: Provides core application building blocks for libraries and applications written in C.
-
-
 
 Current build status
 ====================
 
 
-<table><tr>
-    <td>Appveyor</td>
-    <td>
-      <a href="https://ci.appveyor.com/project/conda-forge/glib-feedstock/branch/master">
-        <img alt="windows" src="https://img.shields.io/appveyor/ci/conda-forge/glib-feedstock/master.svg?label=Windows">
-      </a>
-    </td>
-  </tr>
+<table>
     
   <tr>
     <td>Azure</td>
     <td>
       <details>
         <summary>
-          <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=369&branchName=master">
-            <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glib-feedstock?branchName=master">
+          <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=369&branchName=main">
+            <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glib-feedstock?branchName=main">
           </a>
         </summary>
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>linux_aarch64_python3.6target_platformlinux-aarch64</td>
+              <td>linux_64</td>
               <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=369&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glib-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_python3.6target_platformlinux-aarch64" alt="variant">
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=369&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glib-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_python3.6target_platformlinux-ppc64le</td>
+              <td>linux_aarch64</td>
               <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=369&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glib-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_python3.6target_platformlinux-ppc64le" alt="variant">
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=369&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glib-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_python3.6target_platformlinux-64</td>
+              <td>linux_ppc64le</td>
               <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=369&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glib-feedstock?branchName=master&jobName=linux&configuration=linux_python3.6target_platformlinux-64" alt="variant">
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=369&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glib-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>osx_python3.6target_platformosx-64</td>
+              <td>osx_64</td>
               <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=369&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glib-feedstock?branchName=master&jobName=osx&configuration=osx_python3.6target_platformosx-64" alt="variant">
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=369&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glib-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_c_compilervs2015cxx_compilervs2015python3.6target_platformwin-64</td>
+              <td>osx_arm64</td>
               <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=369&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glib-feedstock?branchName=master&jobName=win&configuration=win_c_compilervs2015cxx_compilervs2015python3.6target_platformwin-64" alt="variant">
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=369&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glib-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>win_64</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=369&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glib-feedstock?branchName=main&jobName=win&configuration=win%20win_64_" alt="variant">
                 </a>
               </td>
             </tr>
@@ -84,6 +82,8 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-glib-green.svg)](https://anaconda.org/conda-forge/glib) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/glib.svg)](https://anaconda.org/conda-forge/glib) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/glib.svg)](https://anaconda.org/conda-forge/glib) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/glib.svg)](https://anaconda.org/conda-forge/glib) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-glib--tools-green.svg)](https://anaconda.org/conda-forge/glib-tools) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/glib-tools.svg)](https://anaconda.org/conda-forge/glib-tools) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/glib-tools.svg)](https://anaconda.org/conda-forge/glib-tools) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/glib-tools.svg)](https://anaconda.org/conda-forge/glib-tools) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libglib-green.svg)](https://anaconda.org/conda-forge/libglib) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libglib.svg)](https://anaconda.org/conda-forge/libglib) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libglib.svg)](https://anaconda.org/conda-forge/libglib) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libglib.svg)](https://anaconda.org/conda-forge/libglib) |
 
 Installing glib
 ===============
@@ -92,25 +92,52 @@ Installing `glib` from the `conda-forge` channel can be achieved by adding `cond
 
 ```
 conda config --add channels conda-forge
+conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `glib` can be installed with:
+Once the `conda-forge` channel has been enabled, `glib, glib-tools, libglib` can be installed with `conda`:
 
 ```
-conda install glib
+conda install glib glib-tools libglib
 ```
 
-It is possible to list all of the versions of `glib` available on your platform with:
+or with `mamba`:
+
+```
+mamba install glib glib-tools libglib
+```
+
+It is possible to list all of the versions of `glib` available on your platform with `conda`:
 
 ```
 conda search glib --channel conda-forge
+```
+
+or with `mamba`:
+
+```
+mamba search glib --channel conda-forge
+```
+
+Alternatively, `mamba repoquery` may provide more information:
+
+```
+# Search all versions available on your platform:
+mamba repoquery search glib --channel conda-forge
+
+# List packages depending on `glib`:
+mamba repoquery whoneeds glib --channel conda-forge
+
+# List dependencies of `glib`:
+mamba repoquery depends glib --channel conda-forge
 ```
 
 
 About conda-forge
 =================
 
-[![Powered by NumFOCUS](https://img.shields.io/badge/powered%20by-NumFOCUS-orange.svg?style=flat&colorA=E1523D&colorB=007D8A)](http://numfocus.org)
+[![Powered by
+NumFOCUS](https://img.shields.io/badge/powered%20by-NumFOCUS-orange.svg?style=flat&colorA=E1523D&colorB=007D8A)](https://numfocus.org)
 
 conda-forge is a community-led conda channel of installable packages.
 In order to provide high-quality builds, the process has been automated into the
@@ -120,10 +147,12 @@ for each of the installable packages. Such a repository is known as a *feedstock
 A feedstock is made up of a conda recipe (the instructions on what and how to build
 the package) and the necessary configurations for automatic building using freely
 available continuous integration services. Thanks to the awesome service provided by
-[CircleCI](https://circleci.com/), [AppVeyor](https://www.appveyor.com/)
-and [TravisCI](https://travis-ci.org/) it is possible to build and upload installable
-packages to the [conda-forge](https://anaconda.org/conda-forge)
-[Anaconda-Cloud](https://anaconda.org/) channel for Linux, Windows and OSX respectively.
+[Azure](https://azure.microsoft.com/en-us/services/devops/), [GitHub](https://github.com/),
+[CircleCI](https://circleci.com/), [AppVeyor](https://www.appveyor.com/),
+[Drone](https://cloud.drone.io/welcome), and [TravisCI](https://travis-ci.com/)
+it is possible to build and upload installable packages to the
+[conda-forge](https://anaconda.org/conda-forge) [anaconda.org](https://anaconda.org/)
+channel for Linux, Windows and OSX respectively.
 
 To manage the continuous integration and simplify feedstock maintenance
 [conda-smithy](https://github.com/conda-forge/conda-smithy) has been developed.
@@ -162,17 +191,20 @@ build distinct package versions.
 
 In order to produce a uniquely identifiable distribution:
  * If the version of a package **is not** being increased, please add or increase
-   the [``build/number``](https://conda.io/docs/user-guide/tasks/build-packages/define-metadata.html#build-number-and-string).
+   the [``build/number``](https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html#build-number-and-string).
  * If the version of a package **is** being increased, please remember to return
-   the [``build/number``](https://conda.io/docs/user-guide/tasks/build-packages/define-metadata.html#build-number-and-string)
+   the [``build/number``](https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html#build-number-and-string)
    back to 0.
 
 Feedstock Maintainers
 =====================
 
 * [@ccordoba12](https://github.com/ccordoba12/)
+* [@isuruf](https://github.com/isuruf/)
 * [@jakirkham](https://github.com/jakirkham/)
 * [@ocefpaf](https://github.com/ocefpaf/)
 * [@pkgw](https://github.com/pkgw/)
 * [@scopatz](https://github.com/scopatz/)
+* [@tschoonj](https://github.com/tschoonj/)
+* [@xhochy](https://github.com/xhochy/)
 

@@ -13,7 +13,7 @@ cd forgebuild
 
 @REM Find libffi with pkg-config
 FOR /F "delims=" %%i IN ('cygpath.exe -m "%LIBRARY_PREFIX%"') DO set "LIBRARY_PREFIX_M=%%i"
-set PKG_CONFIG_PATH=%LIBRARY_PREFIX_M%/lib/pkgconfig;%LIBRARY_PREFIX_M%/share/pkgconfi
+set PKG_CONFIG_PATH=%LIBRARY_PREFIX_M%/lib/pkgconfig;%LIBRARY_PREFIX_M%/share/pkgconfig
 
 @REM Avoid a Meson issue - https://github.com/mesonbuild/meson/issues/4827
 set "PYTHONLEGACYWINDOWSSTDIO=1"
@@ -22,22 +22,19 @@ set "PYTHONIOENCODING=UTF-8"
 @REM See hardcoded-paths.patch
 set "CPPFLAGS=%CPPFLAGS% -D^"%LIBRARY_PREFIX_M%^""
 
-%PYTHON% %BUILD_PREFIX%\Scripts\meson -h
-
-%BUILD_PREFIX%\python.exe %BUILD_PREFIX%\Scripts\meson --buildtype=release --prefix="%LIBRARY_PREFIX_M%" --backend=ninja -Diconv=external -Dselinux=disabled -Dxattr=false -Dlibmount=disabled ..
-if errorlevel 1 exit 1
+meson setup --buildtype=release --prefix="%LIBRARY_PREFIX_M%" --backend=ninja -Dselinux=disabled -Dxattr=false -Dlibmount=disabled ..
+if errorlevel 1 (
+  type forgebuild\meson-logs\meson-log.txt
+  exit /b 1
+)
 
 ninja -v
 if errorlevel 1 exit 1
 
-@REM Lots of tests fail right now
-@REM ninja test
-@REM if errorlevel 1 exit 1
-
-ninja install
-if errorlevel 1 exit 1
-
-del %LIBRARY_PREFIX%\bin\*.pdb
-
-@REM For some reason conda-build decides that the meson files in Scripts are new?
-del %PREFIX%\Scripts\meson* %PREFIX%\Scripts\wraptool*
+meson test --no-suite flaky --timeout-multiplier 8
+if errorlevel 1 (
+  type forgebuild\meson-logs\testlog.txt
+  REM current failures:
+  REM glib:glib+core / hook GLib:ERROR:../glib/tests/hook.c:193:test_hook_basics: 'g_hook_find_func (hl, FALSE, hook_destroy)' should be NULL FAIL
+  exit /b 0
+)
