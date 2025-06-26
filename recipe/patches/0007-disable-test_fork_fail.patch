@@ -1,0 +1,49 @@
+From ddf35454ba5939904d98a5c80f34aaf77e77fab0 Mon Sep 17 00:00:00 2001
+From: Andrii Osipov <aosipov@anaconda.com>
+Date: Thu, 26 Jun 2025 07:57:32 -0700
+Subject: [PATCH] disable test_fork_fail
+
+---
+ glib/tests/testing.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
+
+diff --git a/glib/tests/testing.c b/glib/tests/testing.c
+index 0b66337..f55dea3 100644
+--- a/glib/tests/testing.c
++++ b/glib/tests/testing.c
+@@ -298,17 +298,22 @@ test_timer (void)
+ #ifdef G_OS_UNIX
+ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+ 
++
++// https://github.com/haikuports/haikuports/issues/1870
++// ERROR:../glib/tests/testing.c:307:test_fork_fail: code should not be reached Unknown TAP output lines have been ignored. 
++// Please open a feature request to implement them, or prefix them with a # if they are not TAP syntax.
++
+ /* fork out for a failing test */
+-static void
+-test_fork_fail (void)
+-{
+-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+-    {
+-      g_assert_not_reached();
+-    }
+-  g_test_trap_assert_failed();
+-  g_test_trap_assert_stderr ("*ERROR*test_fork_fail*should not be reached*");
+-}
++//static void
++//test_fork_fail (void)
++//{
++//  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
++//    {
++//      g_assert_not_reached();
++//    }
++//  g_test_trap_assert_failed();
++//  g_test_trap_assert_stderr ("*ERROR*test_fork_fail*should not be reached*");
++//}
+ 
+ /* fork out to assert stdout and stderr patterns */
+ static void
+-- 
+2.39.3 (Apple Git-146)
+
