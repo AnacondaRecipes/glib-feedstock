@@ -29,6 +29,12 @@ if NOT [%PKG_NAME%] == [glib] (
   if errorlevel 1 exit 1
   del %LIBRARY_PREFIX%\bin\gobject-query.exe
   if errorlevel 1 exit 1
+  del %LIBRARY_PREFIX%\bin\gi-compile-repository.exe
+  if errorlevel 1 exit 1
+  del %LIBRARY_PREFIX%\bin\gi-inspect-typelib.exe
+  if errorlevel 1 exit 1
+  del %LIBRARY_PREFIX%\bin\gi-decompile-typelib.exe
+  if errorlevel 1 exit 1
   del %LIBRARY_PREFIX%\bin\gtester*
   if errorlevel 1 exit 1
 
@@ -49,6 +55,8 @@ if NOT [%PKG_NAME%] == [glib] (
   if errorlevel 1 exit 1
   del %LIBRARY_PREFIX%\lib\pkgconfig\gthread-*
   if errorlevel 1 exit 1
+  del %LIBRARY_PREFIX%\lib\pkgconfig\girepository-*
+  if errorlevel 1 exit 1
 
   del %LIBRARY_PREFIX%\share\aclocal\glib-*
   if errorlevel 1 exit 1
@@ -58,6 +66,12 @@ if NOT [%PKG_NAME%] == [glib] (
   if errorlevel 1 exit 1
   rmdir /s /q %LIBRARY_PREFIX%\share\glib-2.0
   if errorlevel 1 exit 1
+) else (
+  @rem intl.lib is currently statically linked and thus should not be mentioned as a hard dependency.
+  @rem Remove this once we are linking it dynamically.
+  for %%f in (%LIBRARY_PREFIX%\lib\pkgconfig\*.pc) do (
+    sed -i "s/-lintl//g" %%f
+  )
 )
 
 rem We don't have bash as a dependency so these shouldn't exist, but
