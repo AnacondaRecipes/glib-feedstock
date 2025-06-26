@@ -16,13 +16,31 @@ export PYTHON="python"
 unset _CONDA_PYTHON_SYSCONFIGDATA_NAME
 
 mkdir -p builddir
-cd builddir
-meson setup --buildtype=release --prefix="$PREFIX" --backend=ninja -Dlibdir=lib -Dlocalstatedir="$PREFIX/var" \
-      -Dlibmount=disabled -Dselinux=disabled -Dxattr=false -Ddtrace=false -Dsystemtap=false .. \
-      || { cat meson-logs/meson-log.txt ; exit 1 ; }
-ninja -j${CPU_COUNT} -v
+meson setup builddir \
+  --buildtype=release \
+  --prefix="$PREFIX" \
+  --backend=ninja \
+  -Dlibdir=lib \
+  -Dlocalstatedir="$PREFIX/var" \
+  -Dlibmount=disabled \
+  -Dselinux=disabled \
+  -Dxattr=false \
+  -Ddtrace=false \
+  -Dsystemtap=false \
+  || { cat meson-logs/meson-log.txt ; exit 1 ; }
+ninja -C builddir -j${CPU_COUNT} -v
 
-export MESON_TEST_TIMEOUT_MULTIPLIER=8
+if [ "${target_platform}" == 'linux-aarch64' ]; then
+    export MESON_TEST_TIMEOUT_MULTIPLIER=16
+else
+    export MESON_TEST_TIMEOUT_MULTIPLIER=8
+fi
 
-#meson test --no-suite flaky --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER} \
-#    || { cat meson-logs/testlog.txt ; exit 1 ; }
+if [[ "$target_platform" != osx-* ]] ; then  # too many tests fail on macOS
+    # Disable this test as it fails if gdb is installed system-wide, otherwise it will be skipped.
+    echo 'exit(0)' > glib/tests/assert-msg-test.py
+    meson test builddir \
+      --no-suite flaky \
+      --timeout-multiplier \
+      ${MESON_TEST_TIMEOUT_MULTIPLIER}
+fi

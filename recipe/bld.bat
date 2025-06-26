@@ -8,8 +8,7 @@ mkdir %BUILD_PREFIX%\Library\etc
 echo none / cygdrive binary,user 0 0 >%BUILD_PREFIX%\Library\etc\fstab
 echo none /tmp usertemp binary,posix=0 0 0 >>%BUILD_PREFIX%\Library\etc\fstab
 
-mkdir forgebuild
-cd forgebuild
+
 
 @REM Find libffi with pkg-config
 FOR /F "delims=" %%i IN ('cygpath.exe -m "%LIBRARY_PREFIX%"') DO set "LIBRARY_PREFIX_M=%%i"
@@ -21,6 +20,9 @@ set "PYTHONIOENCODING=UTF-8"
 
 @REM See hardcoded-paths.patch
 set "CPPFLAGS=%CPPFLAGS% -D^"%LIBRARY_PREFIX_M%^""
+
+mkdir forgebuild
+cd forgebuild
 
 meson setup --buildtype=release --prefix="%LIBRARY_PREFIX_M%" --backend=ninja -Dselinux=disabled -Dxattr=false -Dlibmount=disabled ..
 if errorlevel 1 (
