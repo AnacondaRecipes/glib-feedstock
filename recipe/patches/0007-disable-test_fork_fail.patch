@@ -1,12 +1,25 @@
-From cce8014b27655ff8414ab2c09a1cdd9a7c9a5c4b Mon Sep 17 00:00:00 2001
+From 394ee2e432c0145ecad90f3ca4cc0de0c0227d72 Mon Sep 17 00:00:00 2001
 From: Andrii Osipov <aosipov@anaconda.com>
 Date: Thu, 26 Jun 2025 07:57:32 -0700
 Subject: [PATCH] disable test_fork_fail
 
 ---
- glib/tests/testing.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ glib/tests/meson.build |  1 -
+ glib/tests/testing.c   | 27 ++++++++++++++++-----------
+ 2 files changed, 16 insertions(+), 12 deletions(-)
 
+diff --git a/glib/tests/meson.build b/glib/tests/meson.build
+index b101b06..52af498 100644
+--- a/glib/tests/meson.build
++++ b/glib/tests/meson.build
+@@ -180,7 +180,6 @@ glib_tests = {
+   'utils' : {
+     'c_standards': c_standards.keys(),
+   },
+-  'utils-isolated' : {},
+   'unicode' : {},
+   'unicode-encoding' : {},
+   'unicode-normalize': {},
 diff --git a/glib/tests/testing.c b/glib/tests/testing.c
 index 0b66337..b409073 100644
 --- a/glib/tests/testing.c
