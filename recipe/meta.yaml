@@ -27,16 +27,15 @@ source:
     - patches/0007-Skip-flaky-tests-on-linux64-CI.patch                        # [linux64]
     - patches/0004-Manually-link-with-libiconv-whenever-we-use-libintl..patch  # [win]
     - patches/0005-Increase-some-test-timeouts.patch                           # [win]
-    #- patches/0002-Manually-link-with-libiconv-whenever-we-use-libintl.patch  # [win]
-    #- patches/0006-correct-osx-tests-skips.patch
-    #- patches/0007-win-pkgconfig-test-bash-friendly.patch # [win]
-    #- patches/0008-skip-tests-needing-system-utils.patch # [linux]
 
 build:
   number: 0
   skip: True  # [py<37]
-  #ignore_run_exports_from:
-  #  - python *
+  ignore_run_exports:
+    - libcxx
+    - libffi
+  ignore_run_exports_from:
+    - python *
 
 requirements:
   build:
@@ -68,8 +67,11 @@ outputs:
     script: install.sh  # [unix]
     script: install.bat  # [not unix]
     build:
-      #ignore_run_exports_from:
-      #  - python *
+      ignore_run_exports_from:
+        - python *
+      ignore_run_exports:
+        - libcxx
+        - libffi
       run_exports:
         - {{ pin_subpackage("libglib") }}
     requirements:
@@ -114,6 +116,9 @@ outputs:
     build:
       ignore_run_exports_from:
         - python *
+      ignore_run_exports:
+        - libcxx
+        - libffi
     requirements:
       build:
         - meson >=0.60.0
@@ -144,6 +149,9 @@ outputs:
     build:
       ignore_run_exports_from:
         - python *
+      ignore_run_exports:
+        - libcxx
+        - libffi
       run_exports:
         - {{ pin_subpackage("libglib") }}
     requirements:
@@ -173,7 +181,7 @@ outputs:
         - gtester --help  # [not win]
 
 about:
-  home: https://docs.gtk.org/glib/
+  home: https://docs.gtk.org/glib
   license: LGPL-2.1-or-later
   license_family: LGPL
   license_file: COPYING
@@ -183,8 +191,8 @@ about:
     applications written in C. It provides the core object system used in
     GNOME, the main loop implementation, and a large set of utility functions
     functions for strings and common data structures.
-  doc_url: https://docs.gtk.org/glib/
-  dev_url: https://gitlab.gnome.org/GNOME/glib/
+  doc_url: https://docs.gtk.org/glib
+  dev_url: https://gitlab.gnome.org/GNOME/glib
 
 extra:
   feedstock-name: glib
