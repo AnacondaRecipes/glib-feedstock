@@ -3,10 +3,6 @@
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 
-# Keep in sync with
-# https://gitlab.gnome.org/GNOME/glib/-/blob/main/meson.build?ref_type=heads#L2468
-{% set minimum_python_version = "3.7" %}
-
 package:
   name: glib-split
   version: {{ version }}
@@ -34,14 +30,10 @@ source:
 
 build:
   number: 0
+  # Keep in sync with
+  # https://gitlab.gnome.org/GNOME/glib/-/blob/main/meson.build?ref_type=heads#L2468
+  #{% set minimum_python_version = "3.7" %}
   skip: True  # [py<37]
-  #ignore_run_exports:
-  #  - libcxx
-  #  - libffi
-  #ignore_run_exports_from:
-  #  - python *
-  #missing_dso_whitelist:
-  #      - lib/libffi*
 
 requirements:
   build:
@@ -53,17 +45,17 @@ requirements:
     - pkg-config
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - python >={{ minimum_python_version }}
+    - python
     - setuptools <74
   host:
-    - python >={{ minimum_python_version }}
+    - python
     - libffi {{ libffi }}
     - gettext 0.21.0  # [osx]
     - zlib {{ zlib }}
     - pcre2 {{ pcre2 }}
     - libiconv 1.16
   run:
-    - python #>={{ minimum_python_version }}
+    - python
     # run-dep as a workaround for now; upstream package still imports from distutils
     # imports distutils.msvccompiler which has been removed on recent setuptools
     - setuptools <74  # [py>311]
@@ -73,13 +65,6 @@ outputs:
     script: install.sh  # [unix]
     script: install.bat  # [not unix]
     build:
-      #ignore_run_exports_from:
-      #  - python *
-      #ignore_run_exports:
-      #  - libcxx
-      #  - libffi
-      #missing_dso_whitelist:
-      #  - lib/libffi*
       run_exports:
         - {{ pin_subpackage("libglib") }}
     requirements:
@@ -88,7 +73,7 @@ outputs:
         - ninja-base
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - python #>={{ minimum_python_version }}
+        - python
         - setuptools
       host:
         - libffi {{ libffi }}
@@ -122,20 +107,13 @@ outputs:
     script: install.sh  # [unix]
     script: install.bat  # [not unix]
     build:
-      #ignore_run_exports_from:
-      #  - python *
-      #ignore_run_exports:
-      #  - libcxx
-      #  - libffi
-      #missing_dso_whitelist:
-      #  - lib/libffi*
     requirements:
       build:
         - meson >=0.60.0
         - ninja-base
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - python #>={{ minimum_python_version }}
+        - python
         - setuptools
         - gettext 0.21.0  # [osx]
       host:
@@ -157,13 +135,6 @@ outputs:
     script: install.sh  # [unix]
     script: install.bat  # [not unix]
     build:
-      #ignore_run_exports_from:
-      #  - python *
-      #ignore_run_exports:
-      #  - libcxx
-      #  - libffi
-      #missing_dso_whitelist:
-      #  - lib/libffi*
       run_exports:
         - {{ pin_subpackage("libglib") }}
     requirements:
@@ -172,14 +143,14 @@ outputs:
         - ninja
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - python #>={{ minimum_python_version }}
+        - python
         - setuptools
       host:
         - {{ pin_subpackage("libglib", exact=True) }}
         - {{ pin_subpackage("glib-tools", exact=True) }}
-        - gettext {{ gettext }}  # [osx]
+        - gettext 0.21.0  # [osx]
       run:
-        - python #>={{ minimum_python_version }}
+        - python
         - gettext >=0.21.0,<1.0a0  # [osx]
         - {{ pin_subpackage("libglib", exact=True) }}
         - {{ pin_subpackage("glib-tools", exact=True) }}
