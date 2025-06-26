@@ -60,7 +60,7 @@ requirements:
     - libffi {{ libffi }}
     - gettext 0.21.0  # [osx]
     - zlib {{ zlib }}
-    - pcre2 10.42
+    - pcre2 {{ pcre2 }}
     - libiconv 1.16
   run:
     - python #>={{ minimum_python_version }}
