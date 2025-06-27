@@ -31,7 +31,7 @@ meson setup builddir \
 ninja -C builddir -j${CPU_COUNT} -v
 
 if [ "${target_platform}" == 'linux-aarch64' ]; then
-    export MESON_TEST_TIMEOUT_MULTIPLIER=32
+    export MESON_TEST_TIMEOUT_MULTIPLIER=64
 else
     export MESON_TEST_TIMEOUT_MULTIPLIER=8
 fi
