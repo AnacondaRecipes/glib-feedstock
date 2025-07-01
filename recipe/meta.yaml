@@ -51,7 +51,7 @@ requirements:
   host:
     - python
     - libffi {{ libffi }}
-    - gettext 0.21.0  # [osx]
+    - gettext {{ gettext }}  # [osx]
     - zlib {{ zlib }}
     - pcre2 {{ pcre2 }}
     - libiconv 1.16
