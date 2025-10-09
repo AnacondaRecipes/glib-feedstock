@@ -1,0 +1,58 @@
+From 9f49b1fd3baadd074014383dddf4fe121088207e Mon Sep 17 00:00:00 2001
+From: Mikolaj Gralczyk <mgralczyk@anaconda.com>
+Date: Tue, 21 Oct 2025 13:02:55 +0200
+Subject: [PATCH] [PATCH] Skip flaky tests on linux CI
+
+Originally in conda-forge, this patch skipped only incomopatible
+flaky tests for aarch64. Current CI pipeline sometimes throws
+errors on 64bit arch as well. Plus, mappedfile ocasionally fails,
+so it was added to the patch as well.
+---
+ gio/tests/meson.build  | 2 ++
+ glib/tests/meson.build | 6 ++++--
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/gio/tests/meson.build b/gio/tests/meson.build
+index 26091b6e7..bb89f5726 100644
+--- a/gio/tests/meson.build
++++ b/gio/tests/meson.build
+@@ -97,6 +97,7 @@ gio_tests = {
+     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
+     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+     'can_fail' : host_system in ['darwin', 'windows', 'gnu'],
++    'suite': ['flaky'],
+   },
+   'inet-address' : {},
+   'io-stream' : {},
+@@ -150,6 +151,7 @@ gio_tests = {
+     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
+     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+     'can_fail' : host_system in ['darwin', 'gnu'],
++    'suite': ['flaky'],
+   },
+   'win32-appinfo' : {},
+ }
+diff --git a/glib/tests/meson.build b/glib/tests/meson.build
+index b101b061e..eaef7cd79 100644
+--- a/glib/tests/meson.build
++++ b/glib/tests/meson.build
+@@ -41,7 +41,7 @@ glib_tests = {
+   'fileutils' : {},
+   'gdatetime' : {
+     'source' : ['gdatetime.c', '../gdatetime-private.c'],
+-    'suite' : ['slow'],
++    'suite' : ['slow', 'flaky'],
+     # musl: GDateTime/format_mixed/non_utf8_time_non_utf8_messages should be
+     # skipped but it's not. The fix should be on musl side:
+     # https://www.openwall.com/lists/musl/2023/08/10/3
+@@ -68,7 +68,9 @@ glib_tests = {
+     'c_standards': c_standards.keys(),
+   },
+   'mainloop' : {},
+-  'mappedfile' : {},
++  'mappedfile' : {
++    'suite': ['flaky'],
++  },
+   'mapping' : {},
+   'markup' : {},
+   'markup-parse' : {},

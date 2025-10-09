@@ -24,30 +24,32 @@ source:
     - patches/0005-Increase-some-test-timeouts.patch  # [win]
     # Seems like our CIs are likely incompatible with some dbus tests
     # https://github.com/conda-forge/glib-feedstock/pull/199#issuecomment-2578085726
-    - patches/0006-Skip-flaky-tests-on-linux64-CI.patch  # [linux64]
+    # This is a modified patch '0006-Skip-flaky-tests-on-linux64-CI.patch' from
+    # conda-forge compatible with all linux platforms.
+    - patches/0006-Skip-flaky-tests-on-linux-CI.patch  # [linux]
     # https://github.com/haikuports/haikuports/issues/1870
     # ERROR:../glib/tests/testing.c:307:test_fork_fail: code should not be reached Unknown TAP output lines have been ignored. 
     # Please open a feature request to implement them, or prefix them with a # if they are not TAP syntax.
     - patches/0007-disable-test_fork_fail.patch  # [linux]
 
 build:
-  number: 0
+  number: 1
   # Keep in sync with
   # https://gitlab.gnome.org/GNOME/glib/-/blob/2.84.2/meson.build?ref_type=tags#L2503
   skip: True  # [py<37]
 
 requirements:
   build:
-    - patch # [unix]
-    - m2-patch  # [win]
     - meson >=0.60.0
     - cmake
     - ninja-base
     - pkg-config
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - python
     - setuptools <74
+    - git # [win]
   host:
     - python
     - libffi {{ libffi }}
@@ -72,6 +74,7 @@ outputs:
       build:
         - meson >=0.60.0
         - ninja-base
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - python
@@ -112,6 +115,7 @@ outputs:
       build:
         - meson >=0.60.0
         - ninja-base
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - python
@@ -142,6 +146,7 @@ outputs:
       build:
         - meson >=0.60.0
         - ninja
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - python
