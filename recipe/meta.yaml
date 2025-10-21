@@ -1,4 +1,4 @@
-{% set version = "2.84.2" %}
+{% set version = "2.84.4" %}
 {% set major_minor = ".".join(version.split(".")[:2]) %}
 
 package:
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://download.gnome.org/sources/glib/{{ major_minor }}/glib-{{ version }}.tar.xz
-  sha256: 88e960dd937057407d61fcb3b45a860704b25923c37ae2478b85f2ecb5a4021f
+  sha256: 8a9ea10943c36fc117e253f80c91e477b673525ae45762942858aef57631bb90
   patches:
     # Related to this patch https://bugzilla.gnome.org/show_bug.cgi?id=673135
     # However, it was rejected by upstream. Homebrew decided to keep their own
@@ -33,7 +33,7 @@ source:
     - patches/0007-disable-test_fork_fail.patch  # [linux]
 
 build:
-  number: 1
+  number: 0
   # Keep in sync with
   # https://gitlab.gnome.org/GNOME/glib/-/blob/2.84.2/meson.build?ref_type=tags#L2503
   skip: True  # [py<37]
