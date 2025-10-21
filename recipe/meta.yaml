@@ -49,6 +49,8 @@ requirements:
     - {{ compiler('cxx') }}
     - python
     - setuptools <74
+    # Git is needed to download dependencies: proxy-libintl and sysprof.
+    # In the current CI version, only win is missing git.
     - git # [win]
   host:
     - python
