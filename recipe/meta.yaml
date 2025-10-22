@@ -1,4 +1,4 @@
-{% set version = "2.84.2" %}
+{% set version = "2.84.4" %}
 {% set major_minor = ".".join(version.split(".")[:2]) %}
 
 package:
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://download.gnome.org/sources/glib/{{ major_minor }}/glib-{{ version }}.tar.xz
-  sha256: 88e960dd937057407d61fcb3b45a860704b25923c37ae2478b85f2ecb5a4021f
+  sha256: 8a9ea10943c36fc117e253f80c91e477b673525ae45762942858aef57631bb90
   patches:
     # Related to this patch https://bugzilla.gnome.org/show_bug.cgi?id=673135
     # However, it was rejected by upstream. Homebrew decided to keep their own
@@ -24,7 +24,9 @@ source:
     - patches/0005-Increase-some-test-timeouts.patch  # [win]
     # Seems like our CIs are likely incompatible with some dbus tests
     # https://github.com/conda-forge/glib-feedstock/pull/199#issuecomment-2578085726
-    - patches/0006-Skip-flaky-tests-on-linux64-CI.patch  # [linux64]
+    # This is a modified patch '0006-Skip-flaky-tests-on-linux64-CI.patch' from
+    # conda-forge compatible with all linux platforms.
+    - patches/0006-Skip-flaky-tests-on-linux-CI.patch  # [linux]
     # https://github.com/haikuports/haikuports/issues/1870
     # ERROR:../glib/tests/testing.c:307:test_fork_fail: code should not be reached Unknown TAP output lines have been ignored. 
     # Please open a feature request to implement them, or prefix them with a # if they are not TAP syntax.
@@ -38,16 +40,18 @@ build:
 
 requirements:
   build:
-    - patch # [unix]
-    - m2-patch  # [win]
-    - meson >=0.60.0
+    - meson >=1.4.0
     - cmake
     - ninja-base
     - pkg-config
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - python
-    - setuptools <74
+    - setuptools
+    # Git is needed to download dependencies: proxy-libintl and sysprof.
+    # In the current CI version, only win is missing git.
+    - git # [win]
   host:
     - python
     - libffi {{ libffi }}
@@ -70,8 +74,9 @@ outputs:
         - {{ pin_subpackage("libglib") }}
     requirements:
       build:
-        - meson >=0.60.0
+        - meson >=1.4.0
         - ninja-base
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - python
@@ -110,8 +115,9 @@ outputs:
     build:
     requirements:
       build:
-        - meson >=0.60.0
+        - meson >=1.4.0
         - ninja-base
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - python
@@ -140,8 +146,9 @@ outputs:
         - {{ pin_subpackage("libglib") }}
     requirements:
       build:
-        - meson >=0.60.0
-        - ninja
+        - meson >=1.4.0
+        - ninja-base
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - python
