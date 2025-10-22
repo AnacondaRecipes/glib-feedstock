@@ -40,7 +40,7 @@ build:
 
 requirements:
   build:
-    - meson >=0.60.0
+    - meson >=1.4.0
     - cmake
     - ninja-base
     - pkg-config
@@ -48,7 +48,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - python
-    - setuptools <74
+    - setuptools
     # Git is needed to download dependencies: proxy-libintl and sysprof.
     # In the current CI version, only win is missing git.
     - git # [win]
@@ -74,7 +74,7 @@ outputs:
         - {{ pin_subpackage("libglib") }}
     requirements:
       build:
-        - meson >=0.60.0
+        - meson >=1.4.0
         - ninja-base
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
@@ -115,7 +115,7 @@ outputs:
     build:
     requirements:
       build:
-        - meson >=0.60.0
+        - meson >=1.4.0
         - ninja-base
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
@@ -146,8 +146,8 @@ outputs:
         - {{ pin_subpackage("libglib") }}
     requirements:
       build:
-        - meson >=0.60.0
-        - ninja
+        - meson >=1.4.0
+        - ninja-base
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
