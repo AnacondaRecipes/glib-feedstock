@@ -15,19 +15,23 @@ export PYTHON="python"
 # see for context: https://github.com/conda-forge/glib-feedstock/pull/72 https://github.com/conda-forge/python-feedstock/issues/474
 unset _CONDA_PYTHON_SYSCONFIGDATA_NAME
 
+export PKG_CONFIG="${BUILD_PREFIX}/bin/pkg-config"
+export PKG_CONFIG_PATH="${BUILD_PREFIX}/lib/pkgconfig:${BUILD_PREFIX}/share/pkgconfig:${PKG_CONFIG_PATH:-}"
+
 mkdir -p builddir
 meson setup builddir \
   --buildtype=release \
   --prefix="$PREFIX" \
   --backend=ninja \
   -Dlibdir=lib \
+  -Dintrospection=enabled \
   -Dlocalstatedir="$PREFIX/var" \
   -Dlibmount=disabled \
   -Dselinux=disabled \
   -Dxattr=false \
   -Ddtrace=false \
   -Dsystemtap=false \
-  || { cat meson-logs/meson-log.txt ; exit 1 ; }
+  || { cat "$SRC_DIR"/builddir/meson-logs/meson-log.txt ; exit 1 ; }
 ninja -C builddir -j${CPU_COUNT} -v
 
 if [ "${target_platform}" == 'linux-aarch64' ]; then
