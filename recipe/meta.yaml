@@ -86,7 +86,7 @@ outputs:
         - gettext {{ gettext }}  # [osx]
         - zlib {{ zlib }}
         - pcre2 {{ pcre2 }}
-        - libiconv {{ libiconv }}
+        - libiconv
       run:
         - gettext >=0.21.0,<1.0a0  # [osx]
         # bounds through run_exports
