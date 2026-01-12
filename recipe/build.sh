@@ -15,22 +15,55 @@ export PYTHON="python"
 # see for context: https://github.com/conda-forge/glib-feedstock/pull/72 https://github.com/conda-forge/python-feedstock/issues/474
 unset _CONDA_PYTHON_SYSCONFIGDATA_NAME
 
-# There is currently a cyclic dependency between glib and gobject-introspection:
-# * https://discourse.gnome.org/t/dealing-with-glib-and-gobject-introspection-circular-dependency/18701
-# * https://gitlab.gnome.org/GNOME/gobject-introspection/-/merge_requests/433
-# * https://gitlab.gnome.org/GNOME/glib/-/issues/2616
-export GIR_PREFIX=$(pwd)/g-ir-prefix
-conda create -p ${GIR_PREFIX} -y -c conda-forge g-ir-build-tools gobject-introspection
+###########################
 
-cat <<EOF > $BUILD_PREFIX/bin/g-ir-scanner
-#!/bin/bash
+# ---- gobject-introspection bootstrap (build-platform tools) ----
+export GIR_PREFIX="$SRC_DIR/g-ir-prefix"
 
-exec ${GIR_PREFIX}/bin/g-ir-scanner \$*
+if [[ -n "${build_platform:-}" ]]; then
+  export CONDA_SUBDIR="${build_platform}"
+fi
+
+conda create -p "$GIR_PREFIX" -y \
+  -c conda-forge -c defaults \
+  "python=${PY_VER}" \
+  g-ir-build-tools gobject-introspection
+
+unset CONDA_SUBDIR
+
+# Check, if g-ir-scanner run
+"$GIR_PREFIX/bin/g-ir-scanner" --version
+
+
+cat > "$BUILD_PREFIX/bin/g-ir-scanner" <<EOF
+#!/usr/bin/env bash
+exec "$GIR_PREFIX/bin/g-ir-scanner" "\$@"
 EOF
-chmod +x $BUILD_PREFIX/bin/g-ir-scanner
+chmod +x "$BUILD_PREFIX/bin/g-ir-scanner"
 
+
+export PKG_CONFIG_PATH="$GIR_PREFIX/lib/pkgconfig:$GIR_PREFIX/share/pkgconfig:${PKG_CONFIG_PATH:-}"
+# ---- end bootstrap ----
+
+
+# --- make sure pkg-config sees host/build deps (esp. pcre2) ---
 export PKG_CONFIG="${BUILD_PREFIX}/bin/pkg-config"
-export PKG_CONFIG_PATH="${BUILD_PREFIX}/lib/pkgconfig:${BUILD_PREFIX}/share/pkgconfig:${PKG_CONFIG_PATH:-}"
+
+
+export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig:${PREFIX}/share/pkgconfig:${PKG_CONFIG_PATH:-}"
+export PKG_CONFIG_PATH="${BUILD_PREFIX}/lib/pkgconfig:${BUILD_PREFIX}/share/pkgconfig:${PKG_CONFIG_PATH}"
+
+
+if [[ -n "${GIR_PREFIX:-}" ]]; then
+  export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${GIR_PREFIX}/lib/pkgconfig:${GIR_PREFIX}/share/pkgconfig"
+fi
+
+# DEBUG: Check libs
+${PKG_CONFIG} --exists libpcre2-8
+${PKG_CONFIG} --libs libpcre2-8
+# --- end ---
+
+###########################
 
 mkdir -p builddir
 meson setup builddir \

@@ -2,6 +2,63 @@
 
 set -ex
 
+# --- Make sure Meson-cached pkg-config path exists (multi-output install stage) ---
+REAL_PKG_CONFIG="$(command -v pkg-config)"
+if [[ -z "${REAL_PKG_CONFIG}" ]]; then
+  echo "ERROR: pkg-config not found in PATH"
+  exit 1
+fi
+
+# Meson in your logs tries: .../_build_env/bin/pkg-config
+# In install stage BUILD_PREFIX may be that _build_env prefix.
+mkdir -p "${BUILD_PREFIX}/bin"
+cat > "${BUILD_PREFIX}/bin/pkg-config" <<EOF
+#!/usr/bin/env bash
+exec "${REAL_PKG_CONFIG}" "\$@"
+EOF
+chmod +x "${BUILD_PREFIX}/bin/pkg-config"
+
+# Put it first, so any subprocesses also see it
+export PATH="${BUILD_PREFIX}/bin:${PATH}"
+# --- end ---
+
+# 2. Bootstrap gobject-introspection tools (without touching meta.yaml)
+export GIR_PREFIX="${SRC_DIR}/g-ir-prefix"
+
+if [[ ! -x "${GIR_PREFIX}/bin/g-ir-scanner" ]]; then
+  # g-ir-build-tools есть только в conda-forge
+  conda create -p "${GIR_PREFIX}" -y \
+    -c conda-forge -c defaults \
+    python gobject-introspection g-ir-build-tools
+fi
+
+# 3. Make g-ir-scanner available in PATH (Meson looking it there)
+mkdir -p "${BUILD_PREFIX}/bin"
+cat > "${BUILD_PREFIX}/bin/g-ir-scanner" <<'EOF'
+#!/usr/bin/env bash
+exec "${GIR_PREFIX}/bin/g-ir-scanner" "$@"
+EOF
+chmod +x "${BUILD_PREFIX}/bin/g-ir-scanner"
+
+export PATH="${BUILD_PREFIX}/bin:${PATH}"
+
+# 4. For Meson to help find gobject-introspection-1.0.pc
+export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig:${PREFIX}/share/pkgconfig:${PKG_CONFIG_PATH:-}"
+if [[ -d "${GIR_PREFIX}/lib/pkgconfig" ]]; then
+  export PKG_CONFIG_PATH="${GIR_PREFIX}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+fi
+
+# --- end ---
+
+
+# echo "PKG_CONFIG=$PKG_CONFIG"
+# $PKG_CONFIG --version
+# $PKG_CONFIG --modversion gobject-introspection-1.0 || true
+# $PKG_CONFIG --variable=g_ir_scanner gobject-introspection-1.0 || true
+# which g-ir-scanner
+# g-ir-scanner --version
+# exit 1
+
 unset _CONDA_PYTHON_SYSCONFIGDATA_NAME
 
 cd builddir
