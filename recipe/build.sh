@@ -59,9 +59,8 @@ if [[ -n "${GIR_PREFIX:-}" ]]; then
 fi
 
 # DEBUG: Check libs
-${PKG_CONFIG} --exists libpcre2-8
-${PKG_CONFIG} --libs libpcre2-8
-# --- end ---
+# ${PKG_CONFIG} --exists libpcre2-8
+# ${PKG_CONFIG} --libs libpcre2-8
 
 ###########################
 

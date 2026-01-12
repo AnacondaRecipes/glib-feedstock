@@ -2,15 +2,33 @@
 
 set -ex
 
+#!/bin/bash
+set -ex
+
 export PATH="${BUILD_PREFIX}/bin:${PATH}"
 
-# --- Make sure Meson-cached pkg-config path exists (multi-output install stage) ---
-if command -v pkg-config >/dev/null 2>&1; then
-  REAL_PKG_CONFIG=$(command -v pkg-config)
+if REAL_PKG_CONFIG="$(command -v pkg-config 2>/dev/null)"; then
+  :
+elif [ -x "${BUILD_PREFIX}/bin/pkg-config" ]; then
+  REAL_PKG_CONFIG="${BUILD_PREFIX}/bin/pkg-config"
+elif [ -x "${PREFIX}/bin/pkg-config" ]; then
+  REAL_PKG_CONFIG="${PREFIX}/bin/pkg-config"
 else
-  echo "ERROR: pkg-config not found in PATH"
+  echo "ERROR: pkg-config not found. PATH=${PATH}" >&2
+  echo "DEBUG: BUILD_PREFIX=${BUILD_PREFIX}" >&2
+  echo "DEBUG: PREFIX=${PREFIX}" >&2
+  ls -la "${BUILD_PREFIX}/bin" 2>/dev/null || true
+  ls -la "${PREFIX}/bin" 2>/dev/null || true
   exit 1
 fi
+
+# --- Make sure Meson-cached pkg-config path exists (multi-output install stage) ---
+# if command -v pkg-config >/dev/null 2>&1; then
+#   REAL_PKG_CONFIG=$(command -v pkg-config)
+# else
+#   echo "ERROR: pkg-config not found in PATH"
+#   exit 1
+# fi
 
 # Meson in your logs tries: .../_build_env/bin/pkg-config
 # In install stage BUILD_PREFIX may be that _build_env prefix.
