@@ -74,7 +74,6 @@ outputs:
         - {{ pin_subpackage("libglib") }}
     requirements:
       build:
-        - pkg-config
         - meson >=1.4.0
         - ninja-base
         - {{ stdlib('c') }}
@@ -119,7 +118,6 @@ outputs:
     build:
     requirements:
       build:
-        - pkg-config
         - meson >=1.4.0
         - ninja-base
         - {{ stdlib('c') }}
@@ -151,7 +149,6 @@ outputs:
         - {{ pin_subpackage("libglib") }}
     requirements:
       build:
-        - pkg-config
         - meson >=1.4.0
         - ninja-base
         - {{ stdlib('c') }}

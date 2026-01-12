@@ -2,6 +2,8 @@
 
 set -ex
 
+export PATH="${BUILD_PREFIX}/bin:${PATH}"
+
 # --- Make sure Meson-cached pkg-config path exists (multi-output install stage) ---
 if command -v pkg-config >/dev/null 2>&1; then
   REAL_PKG_CONFIG=$(command -v pkg-config)
