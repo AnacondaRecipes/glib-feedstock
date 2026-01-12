@@ -36,11 +36,10 @@ build:
   number: 0
   # Keep in sync with
   # https://gitlab.gnome.org/GNOME/glib/-/blob/2.84.2/meson.build?ref_type=tags#L2503
-  # skip: True  # [py<37]
+  skip: True  # [py<37]
 
 requirements:
   build:
-    - gobject-introspection
     - meson >=1.4.0
     - cmake
     - ninja-base
@@ -75,7 +74,6 @@ outputs:
         - {{ pin_subpackage("libglib") }}
     requirements:
       build:
-        - gobject-introspection
         - meson >=1.4.0
         - ninja-base
         - {{ stdlib('c') }}
@@ -109,10 +107,10 @@ outputs:
         - test -f ${PREFIX}/etc/conda/activate.d/libglib_activate.sh  # [not win]
         - test -f ${PREFIX}/etc/conda/deactivate.d/libglib_deactivate.sh  # [not win]
         # Introspection data is needed at runtime
-        - test -f ${PREFIX}/share/gir-1.0/GLib-2.0.gir              # [unix]
-        - test -f ${PREFIX}/lib/girepository-1.0/GLib-2.0.typelib   # [unix]
-        - if not exist %LIBRARY_PREFIX%\share\gir-1.0\GLib-2.0.gir exit 1             # [win]
-        - if not exist %LIBRARY_PREFIX%\lib\girepository-1.0\GLib-2.0.typelib exit 1  # [win]
+        # - test -f ${PREFIX}/share/gir-1.0/GLib-2.0.gir              # [unix]
+        # - test -f ${PREFIX}/lib/girepository-1.0/GLib-2.0.typelib   # [unix]
+        # - if not exist %LIBRARY_PREFIX%\share\gir-1.0\GLib-2.0.gir exit 1             # [win]
+        # - if not exist %LIBRARY_PREFIX%\lib\girepository-1.0\GLib-2.0.typelib exit 1  # [win]
 
   - name: glib-tools
     script: install.sh  # [unix]

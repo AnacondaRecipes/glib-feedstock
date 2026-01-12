@@ -15,6 +15,20 @@ export PYTHON="python"
 # see for context: https://github.com/conda-forge/glib-feedstock/pull/72 https://github.com/conda-forge/python-feedstock/issues/474
 unset _CONDA_PYTHON_SYSCONFIGDATA_NAME
 
+# There is currently a cyclic dependency between glib and gobject-introspection:
+# * https://discourse.gnome.org/t/dealing-with-glib-and-gobject-introspection-circular-dependency/18701
+# * https://gitlab.gnome.org/GNOME/gobject-introspection/-/merge_requests/433
+# * https://gitlab.gnome.org/GNOME/glib/-/issues/2616
+export GIR_PREFIX=$(pwd)/g-ir-prefix
+conda create -p ${GIR_PREFIX} -y g-ir-build-tools gobject-introspection
+
+cat <<EOF > $BUILD_PREFIX/bin/g-ir-scanner
+#!/bin/bash
+
+exec ${GIR_PREFIX}/bin/g-ir-scanner \$*
+EOF
+chmod +x $BUILD_PREFIX/bin/g-ir-scanner
+
 export PKG_CONFIG="${BUILD_PREFIX}/bin/pkg-config"
 export PKG_CONFIG_PATH="${BUILD_PREFIX}/lib/pkgconfig:${BUILD_PREFIX}/share/pkgconfig:${PKG_CONFIG_PATH:-}"
 
