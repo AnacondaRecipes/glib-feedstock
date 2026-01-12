@@ -3,8 +3,8 @@
 set -ex
 
 # --- Make sure Meson-cached pkg-config path exists (multi-output install stage) ---
-REAL_PKG_CONFIG="$(command -v pkg-config)"
-if [[ -z "${REAL_PKG_CONFIG}" ]]; then
+REAL_PKG_CONFIG=$(command -v pkg-config 2>/dev/null)
+if [ -z "$REAL_PKG_CONFIG" ]; then
   echo "ERROR: pkg-config not found in PATH"
   exit 1
 fi
