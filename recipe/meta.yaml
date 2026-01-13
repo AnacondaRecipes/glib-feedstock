@@ -36,7 +36,7 @@ build:
   number: 0
   # Keep in sync with
   # https://gitlab.gnome.org/GNOME/glib/-/blob/2.84.2/meson.build?ref_type=tags#L2503
-  skip: True  # [py<37 or linux or win]
+  skip: True  # [py<37 or osx or win]
 
 requirements:
   build:
@@ -76,7 +76,7 @@ outputs:
       build:
         - meson >=1.4.0
         - ninja-base
-        - pkg-config  # [osx]
+        - pkg-config
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
@@ -121,7 +121,7 @@ outputs:
       build:
         - meson >=1.4.0
         - ninja-base
-        - pkg-config  # [osx]
+        - pkg-config
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
@@ -153,7 +153,7 @@ outputs:
       build:
         - meson >=1.4.0
         - ninja-base
-        - pkg-config  # [osx]
+        - pkg-config
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
