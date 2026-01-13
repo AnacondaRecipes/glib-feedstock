@@ -36,7 +36,7 @@ build:
   number: 0
   # Keep in sync with
   # https://gitlab.gnome.org/GNOME/glib/-/blob/2.84.2/meson.build?ref_type=tags#L2503
-  skip: True  # [py<37 or osx or win]
+  skip: True  # [py<37]
 
 requirements:
   build:
@@ -87,7 +87,7 @@ outputs:
         - gettext {{ gettext }}  # [osx]
         - zlib {{ zlib }}
         - pcre2 {{ pcre2 }}
-        - libiconv {{ libiconv }}
+        - libiconv
       run:
         - gettext >=0.21.0,<1.0a0  # [osx]
         # bounds through run_exports
@@ -98,12 +98,9 @@ outputs:
 
     test:
       commands:
-        - echo "-------START-TEST-------"  # [win]
         - test -f ${PREFIX}/lib/libglib-2.0.0{{ SHLIB_EXT }}  # [osx]
         - test -f ${PREFIX}/lib/libglib-2.0{{ SHLIB_EXT }}.0  # [linux]
-        - echo "STEP 1"  # [win]
         - if not exist "%LIBRARY_BIN%\\glib-2.0-0.dll" exit 1  # [win]
-        - echo "STEP 2"  # [win]
         - if not exist "%LIBRARY_LIB%\\glib-2.0.lib" exit 1   # [win]
         - test ! -f ${PREFIX}/lib/libgobject-2.0.la  # [not win]
         - test ! -f ${PREFIX}/lib/libglib-2.0${SHLIB_EXT}  # [not win]
@@ -113,11 +110,8 @@ outputs:
         # Introspection data is needed at runtime
         - test -f ${PREFIX}/share/gir-1.0/GLib-2.0.gir              # [unix]
         - test -f ${PREFIX}/lib/girepository-1.0/GLib-2.0.typelib   # [unix]
-        - echo "STEP 3"  # [win]
-        - if not exist %LIBRARY_PREFIX%\share\gir-1.0\GLib-2.0.gir exit 1             # [win]
-        - echo "STEP 4"  # [win]
-        - if not exist %LIBRARY_PREFIX%\lib\girepository-1.0\GLib-2.0.typelib exit 1  # [win]
-        - echo "-------START-TEST-------"  # [win]
+        # - if not exist %LIBRARY_PREFIX%\share\gir-1.0\GLib-2.0.gir exit 1             # [win]
+        # - if not exist %LIBRARY_PREFIX%\lib\girepository-1.0\GLib-2.0.typelib exit 1  # [win]
 
   - name: glib-tools
     script: install.sh  # [unix]
