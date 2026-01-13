@@ -47,7 +47,21 @@ export PKG_CONFIG_PATH="$GIR_PREFIX/lib/pkgconfig:$GIR_PREFIX/share/pkgconfig:${
 
 
 # --- make sure pkg-config sees host/build deps (esp. pcre2) ---
-export PKG_CONFIG="${BUILD_PREFIX}/bin/pkg-config"
+# export PKG_CONFIG="${BUILD_PREFIX}/bin/pkg-config"
+
+
+# --- pkg-config (safe, no recursion) ---
+# Prefer an existing pkg-config in PATH
+if command -v pkg-config >/dev/null 2>&1; then
+  export PKG_CONFIG="$(command -v pkg-config)"
+fi
+
+# If PKG_CONFIG ends up pointing to BUILD_PREFIX/bin/pkg-config, make sure it's not a wrapper to itself
+if [[ -n "${PKG_CONFIG:-}" && "${PKG_CONFIG}" == "${BUILD_PREFIX}/bin/pkg-config" ]]; then
+  # If it's not executable or suspicious, just unset and let Meson find it via PATH
+  [[ -x "${PKG_CONFIG}" ]] || unset PKG_CONFIG
+fi
+# --- end pkg-config ---
 
 
 export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig:${PREFIX}/share/pkgconfig:${PKG_CONFIG_PATH:-}"

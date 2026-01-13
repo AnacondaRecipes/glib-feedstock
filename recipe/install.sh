@@ -3,61 +3,6 @@
 set -ex
 
 
-# --- pkg-config (CI-safe; prefers conda build env; macOS-friendly) ---
-# Put fixes under this wrapper exactly as you asked
-if [ "${target_platform}" = osx-* ]; then
-  # Prefer conda-build tools, not system/homebrew.
-  # conda-build usually provides tools in BUILD_PREFIX/bin (a.k.a. _build_env/bin)
-  REAL_PKG_CONFIG=""
-
-  # 1) Most common: pkg-config exists in build env
-  if [ -x "${BUILD_PREFIX}/bin/pkg-config" ]; then
-    REAL_PKG_CONFIG="${BUILD_PREFIX}/bin/pkg-config"
-  # 2) Sometimes only pkgconf exists (no pkg-config alias)
-  elif [ -x "${BUILD_PREFIX}/bin/pkgconf" ]; then
-    REAL_PKG_CONFIG="${BUILD_PREFIX}/bin/pkgconf"
-  # 3) Fallback: host prefix (less likely during install stage, but cheap to try)
-  elif [ -x "${PREFIX}/bin/pkg-config" ]; then
-    REAL_PKG_CONFIG="${PREFIX}/bin/pkg-config"
-  elif [ -x "${PREFIX}/bin/pkgconf" ]; then
-    REAL_PKG_CONFIG="${PREFIX}/bin/pkgconf"
-  # 4) Last resort: PATH (may be empty on CI, but ok locally)
-  elif command -v pkg-config >/dev/null 2>&1; then
-    REAL_PKG_CONFIG="$(command -v pkg-config)"
-  elif command -v pkgconf >/dev/null 2>&1; then
-    REAL_PKG_CONFIG="$(command -v pkgconf)"
-  fi
-
-  if [ -z "${REAL_PKG_CONFIG}" ]; then
-    echo "ERROR: pkg-config/pkgconf not found."
-    echo "DEBUG: target_platform=${target_platform}"
-    echo "DEBUG: BUILD_PREFIX=${BUILD_PREFIX}"
-    echo "DEBUG: PREFIX=${PREFIX}"
-    echo "DEBUG: PATH=${PATH}"
-    echo "DEBUG: ls BUILD_PREFIX/bin:"
-    ls -la "${BUILD_PREFIX}/bin" || true
-    echo "DEBUG: ls PREFIX/bin:"
-    ls -la "${PREFIX}/bin" || true
-    exit 1
-  fi
-
-  # Ensure Meson (and any subprocess) can always execute "pkg-config"
-  mkdir -p "${BUILD_PREFIX}/bin"
-  cat > "${BUILD_PREFIX}/bin/pkg-config" <<EOF
-#!/usr/bin/env sh
-exec "${REAL_PKG_CONFIG}" "\$@"
-EOF
-  chmod +x "${BUILD_PREFIX}/bin/pkg-config"
-
-  export PATH="${BUILD_PREFIX}/bin:${PATH}"
-  export PKG_CONFIG="${BUILD_PREFIX}/bin/pkg-config"
-
-  # Keep pkg-config search paths sane in multi-output install stage
-  export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig:${PREFIX}/share/pkgconfig:${PKG_CONFIG_PATH:-}"
-  export PKG_CONFIG_PATH="${BUILD_PREFIX}/lib/pkgconfig:${BUILD_PREFIX}/share/pkgconfig:${PKG_CONFIG_PATH}"
-fi
-# --- end pkg-config block ---
-
 # --- Make sure Meson-cached pkg-config path exists (multi-output install stage) ---
 # if command -v pkg-config >/dev/null 2>&1; then
 #   REAL_PKG_CONFIG=$(command -v pkg-config)

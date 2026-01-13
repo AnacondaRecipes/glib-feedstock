@@ -76,6 +76,7 @@ outputs:
       build:
         - meson >=1.4.0
         - ninja-base
+        - pkg-config  # [osx]
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
@@ -120,6 +121,7 @@ outputs:
       build:
         - meson >=1.4.0
         - ninja-base
+        - pkg-config  # [osx]
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
@@ -151,6 +153,7 @@ outputs:
       build:
         - meson >=1.4.0
         - ninja-base
+        - pkg-config  # [osx]
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
