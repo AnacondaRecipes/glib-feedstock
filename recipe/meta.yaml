@@ -36,7 +36,7 @@ build:
   number: 0
   # Keep in sync with
   # https://gitlab.gnome.org/GNOME/glib/-/blob/2.84.2/meson.build?ref_type=tags#L2503
-  skip: True  # [py<37]
+  skip: True  # [py<37 or osx or linux]
 
 requirements:
   build:

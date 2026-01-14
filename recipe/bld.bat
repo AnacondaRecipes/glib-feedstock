@@ -24,7 +24,7 @@ set "CPPFLAGS=%CPPFLAGS% -D^"%LIBRARY_PREFIX_M%^""
 mkdir forgebuild
 cd forgebuild
 
-meson setup --buildtype=release --prefix="%LIBRARY_PREFIX_M%" --backend=ninja -Dselinux=disabled -Dxattr=false -Dlibmount=disabled ..
+meson setup --buildtype=release --prefix="%LIBRARY_PREFIX_M%" --backend=ninja -Dselinux=disabled -Dxattr=false -Dlibmount=disabled -Dintrospection=enabled ..
 if errorlevel 1 (
   type forgebuild\meson-logs\meson-log.txt
   exit /b 1
