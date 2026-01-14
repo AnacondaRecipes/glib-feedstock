@@ -13,7 +13,10 @@ set "GIR_PREFIX=%cd%\g-ir-prefix"
 call conda create -p %GIR_PREFIX% -y -c conda-forge -c defaults g-ir-build-tools gobject-introspection glib "setuptools<71"
 if errorlevel 1 exit 1
 
-set "PATH=%PATH%;%GIR_PREFIX%\Library;%GIR_PREFIX%\Library\bin"
+@REM set "PATH=%PATH%;%GIR_PREFIX%\Library;%GIR_PREFIX%\Library\bin"
+
+set "PYTHONPATH=%GIR_PREFIX%\Lib\site-packages;%PYTHONPATH%"
+set "PATH=%GIR_PREFIX%\Library;%GIR_PREFIX%\Library\bin;%GIR_PREFIX%\Library\usr\bin;%PATH%"
 
 mkdir forgebuild
 cd forgebuild
