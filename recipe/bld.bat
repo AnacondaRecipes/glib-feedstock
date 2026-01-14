@@ -13,8 +13,6 @@ set "GIR_PREFIX=%cd%\g-ir-prefix"
 call conda create -p %GIR_PREFIX% -y -c conda-forge -c defaults "python=%PY_VER%" g-ir-build-tools gobject-introspection glib "setuptools<71"
 if errorlevel 1 exit 1
 
-@REM set "PATH=%PATH%;%GIR_PREFIX%\Library;%GIR_PREFIX%\Library\bin"
-
 set "PYTHONPATH=%GIR_PREFIX%\Lib\site-packages;%PYTHONPATH%"
 set "PATH=%GIR_PREFIX%\Library;%GIR_PREFIX%\Library\bin;%GIR_PREFIX%\Library\usr\bin;%PATH%"
 
@@ -29,9 +27,6 @@ set PKG_CONFIG_PATH=%LIBRARY_PREFIX_M%/lib/pkgconfig;%LIBRARY_PREFIX_M%/share/pk
 @REM Avoid a Meson issue - https://github.com/mesonbuild/meson/issues/4827
 set "PYTHONLEGACYWINDOWSSTDIO=1"
 set "PYTHONIOENCODING=UTF-8"
-
-@REM See hardcoded-paths.patch
-set "CPPFLAGS=%CPPFLAGS% -D^"%LIBRARY_PREFIX_M%^""
 
 meson setup --buildtype=release --prefix="%LIBRARY_PREFIX_M%" --backend=ninja -Dselinux=disabled -Dxattr=false -Dlibmount=disabled -Dintrospection=enabled ..
 if errorlevel 1 (
