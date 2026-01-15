@@ -33,7 +33,7 @@ source:
     - patches/0007-disable-test_fork_fail.patch  # [linux]
 
 build:
-  number: 0
+  number: 1
   # Keep in sync with
   # https://gitlab.gnome.org/GNOME/glib/-/blob/2.84.2/meson.build?ref_type=tags#L2503
   skip: True  # [py<37]
