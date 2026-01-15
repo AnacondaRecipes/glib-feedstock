@@ -15,19 +15,67 @@ export PYTHON="python"
 # see for context: https://github.com/conda-forge/glib-feedstock/pull/72 https://github.com/conda-forge/python-feedstock/issues/474
 unset _CONDA_PYTHON_SYSCONFIGDATA_NAME
 
+# ---- gobject-introspection bootstrap (build-platform tools) ----
+export GIR_PREFIX="$SRC_DIR/g-ir-prefix"
+
+if [[ -n "${build_platform:-}" ]]; then
+  export CONDA_SUBDIR="${build_platform}"
+fi
+
+conda create -p "$GIR_PREFIX" -y \
+  "python=${PY_VER}" \
+  gobject-introspection
+
+unset CONDA_SUBDIR
+
+# Check, if g-ir-scanner run
+"$GIR_PREFIX/bin/g-ir-scanner" --version
+
+cat > "$BUILD_PREFIX/bin/g-ir-scanner" <<EOF
+#!/usr/bin/env bash
+exec "$GIR_PREFIX/bin/g-ir-scanner" "\$@"
+EOF
+chmod +x "$BUILD_PREFIX/bin/g-ir-scanner"
+
+export PKG_CONFIG_PATH="$GIR_PREFIX/lib/pkgconfig:$GIR_PREFIX/share/pkgconfig:${PKG_CONFIG_PATH:-}"
+
+# Prefer an existing pkg-config in PATH
+if command -v pkg-config >/dev/null 2>&1; then
+  export PKG_CONFIG="$(command -v pkg-config)"
+fi
+
+# If PKG_CONFIG ends up pointing to BUILD_PREFIX/bin/pkg-config, make sure it's not a wrapper to itself
+if [[ -n "${PKG_CONFIG:-}" && "${PKG_CONFIG}" == "${BUILD_PREFIX}/bin/pkg-config" ]]; then
+  # If it's not executable or suspicious, just unset and let Meson find it via PATH
+  [[ -x "${PKG_CONFIG}" ]] || unset PKG_CONFIG
+fi
+
+export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig:${PREFIX}/share/pkgconfig:${PKG_CONFIG_PATH:-}"
+export PKG_CONFIG_PATH="${BUILD_PREFIX}/lib/pkgconfig:${BUILD_PREFIX}/share/pkgconfig:${PKG_CONFIG_PATH}"
+
+if [[ -n "${GIR_PREFIX:-}" ]]; then
+  export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${GIR_PREFIX}/lib/pkgconfig:${GIR_PREFIX}/share/pkgconfig"
+fi
+
+# DEBUG
+# ${PKG_CONFIG} --exists libpcre2-8
+# ${PKG_CONFIG} --libs libpcre2-8
+
 mkdir -p builddir
 meson setup builddir \
   --buildtype=release \
   --prefix="$PREFIX" \
   --backend=ninja \
   -Dlibdir=lib \
+  -Dintrospection=enabled \
   -Dlocalstatedir="$PREFIX/var" \
   -Dlibmount=disabled \
   -Dselinux=disabled \
   -Dxattr=false \
   -Ddtrace=false \
   -Dsystemtap=false \
-  || { cat meson-logs/meson-log.txt ; exit 1 ; }
+  || { cat "$SRC_DIR"/builddir/meson-logs/meson-log.txt ; exit 1 ; }
+
 ninja -C builddir -j${CPU_COUNT} -v
 
 if [ "${target_platform}" == 'linux-aarch64' ]; then

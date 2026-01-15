@@ -33,7 +33,7 @@ source:
     - patches/0007-disable-test_fork_fail.patch  # [linux]
 
 build:
-  number: 0
+  number: 1
   # Keep in sync with
   # https://gitlab.gnome.org/GNOME/glib/-/blob/2.84.2/meson.build?ref_type=tags#L2503
   skip: True  # [py<37]
@@ -76,6 +76,7 @@ outputs:
       build:
         - meson >=1.4.0
         - ninja-base
+        - pkg-config  # [not win]
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
@@ -86,7 +87,7 @@ outputs:
         - gettext {{ gettext }}  # [osx]
         - zlib {{ zlib }}
         - pcre2 {{ pcre2 }}
-        - libiconv {{ libiconv }}
+        - libiconv
       run:
         - gettext >=0.21.0,<1.0a0  # [osx]
         # bounds through run_exports
@@ -94,20 +95,23 @@ outputs:
         - zlib
         - pcre2
         - libiconv
-      run_constrained:
-        # Avoid colliding with older glib builds that didn't have a libglib output
-        - glib {{ version }} *_{{ PKG_BUILDNUM }}
+
     test:
       commands:
         - test -f ${PREFIX}/lib/libglib-2.0.0{{ SHLIB_EXT }}  # [osx]
         - test -f ${PREFIX}/lib/libglib-2.0{{ SHLIB_EXT }}.0  # [linux]
-        - if not exist "%LIBRARY_BIN%\\glib-2.0-0.dll" exit 1 # [win]
+        - if not exist "%LIBRARY_BIN%\\glib-2.0-0.dll" exit 1  # [win]
         - if not exist "%LIBRARY_LIB%\\glib-2.0.lib" exit 1   # [win]
         - test ! -f ${PREFIX}/lib/libgobject-2.0.la  # [not win]
         - test ! -f ${PREFIX}/lib/libglib-2.0${SHLIB_EXT}  # [not win]
         - test -f ${PREFIX}/lib/pkgconfig/glib-2.0.pc  # [unix]
         - test -f ${PREFIX}/etc/conda/activate.d/libglib_activate.sh  # [not win]
         - test -f ${PREFIX}/etc/conda/deactivate.d/libglib_deactivate.sh  # [not win]
+        # Introspection test
+        - test -f ${PREFIX}/share/gir-1.0/GLib-2.0.gir              # [unix]
+        - test -f ${PREFIX}/lib/girepository-1.0/GLib-2.0.typelib   # [unix]
+        - if not exist %LIBRARY_PREFIX%\share\gir-1.0\GLib-2.0.gir exit 1             # [win]
+        - if not exist %LIBRARY_PREFIX%\lib\girepository-1.0\GLib-2.0.typelib exit 1  # [win]
 
   - name: glib-tools
     script: install.sh  # [unix]
@@ -117,6 +121,7 @@ outputs:
       build:
         - meson >=1.4.0
         - ninja-base
+        - pkg-config  # [not win]
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
@@ -124,9 +129,9 @@ outputs:
         - setuptools
         - gettext {{ gettext }}  # [osx]
       host:
-        - {{ pin_subpackage("libglib", exact=True) }}
+        - {{ pin_subpackage("libglib", skip_build_id=True) }}
       run:
-        - {{ pin_subpackage("libglib", exact=True) }}
+        - {{ pin_subpackage("libglib", skip_build_id=True) }}
         - gettext >=0.21.0,<1.0a0  # [osx]
     test:
       commands:
@@ -148,20 +153,21 @@ outputs:
       build:
         - meson >=1.4.0
         - ninja-base
+        - pkg-config  # [not win]
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - python
         - setuptools
       host:
-        - {{ pin_subpackage("libglib", exact=True) }}
-        - {{ pin_subpackage("glib-tools", exact=True) }}
+        - {{ pin_subpackage("libglib", skip_build_id=True) }}
+        - {{ pin_subpackage("glib-tools", skip_build_id=True) }}
         - gettext {{ gettext }}  # [osx]
       run:
         - python
         - gettext >=0.21.0,<1.0a0  # [osx]
-        - {{ pin_subpackage("libglib", exact=True) }}
-        - {{ pin_subpackage("glib-tools", exact=True) }}
+        - {{ pin_subpackage("libglib", skip_build_id=True) }}
+        - {{ pin_subpackage("glib-tools", skip_build_id=True) }}
     test:
       commands:
         - test -f ${PREFIX}/lib/libglib-2.0${SHLIB_EXT}  # [not win]
