@@ -10,10 +10,16 @@ echo none /tmp usertemp binary,posix=0 0 0 >>%BUILD_PREFIX%\Library\etc\fstab
 
 set "GIR_PREFIX=%cd%\g-ir-prefix"
 
-@REM call conda create -p %GIR_PREFIX% -y -c conda-forge -c defaults "python=%PY_VER%" g-ir-build-tools gobject-introspection glib "setuptools<71"
-@REM if errorlevel 1 exit 1
-
-call conda create -p %GIR_PREFIX% -y "python=%PY_VER%" gobject-introspection glib "setuptools<71"
+REM NOTE:
+REM gobject-introspection (g-ir-scanner) is used here strictly as a *build-time tool*.
+REM On Windows, using the target Python version (e.g. 3.14) often fails to resolve
+REM a compatible dependency set (libffi / python_abi / gobject-introspection).
+REM
+REM To keep the build reliable and deterministic, we pin a known-good Python
+REM version (3.12) for the GIR build environment. The generated GIR/typelib
+REM artifacts are Python-version-independent and safe to use for all outputs.
+set "GIR_PY=3.12"
+call conda create -p %GIR_PREFIX% -y "python=%GIR_PY%" gobject-introspection glib "setuptools<71"
 if errorlevel 1 exit 1
 
 set "PYTHONPATH=%GIR_PREFIX%\Lib\site-packages;%PYTHONPATH%"

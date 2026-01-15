@@ -22,11 +22,6 @@ if [[ -n "${build_platform:-}" ]]; then
   export CONDA_SUBDIR="${build_platform}"
 fi
 
-# conda create -p "$GIR_PREFIX" -y \
-#   -c conda-forge -c defaults \
-#   "python=${PY_VER}" \
-#   g-ir-build-tools gobject-introspection
-
 conda create -p "$GIR_PREFIX" -y \
   "python=${PY_VER}" \
   gobject-introspection
