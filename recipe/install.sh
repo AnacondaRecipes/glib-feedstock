@@ -8,11 +8,15 @@ export PATH="${BUILD_PREFIX}/bin:${PATH}"
 # Bootstrap gobject-introspection tools (without touching meta.yaml)
 export GIR_PREFIX="${SRC_DIR}/g-ir-prefix"
 
+# if [[ ! -x "${GIR_PREFIX}/bin/g-ir-scanner" ]]; then
+#   conda create -p "${GIR_PREFIX}" -y \
+#     -c conda-forge -c defaults \
+#     python gobject-introspection g-ir-build-tools
+# fi
+
 if [[ ! -x "${GIR_PREFIX}/bin/g-ir-scanner" ]]; then
-  # g-ir-build-tools есть только в conda-forge
   conda create -p "${GIR_PREFIX}" -y \
-    -c conda-forge -c defaults \
-    python gobject-introspection g-ir-build-tools
+    "python=${PY_VER}" gobject-introspection
 fi
 
 # Make g-ir-scanner available in PATH (Meson looking it there)

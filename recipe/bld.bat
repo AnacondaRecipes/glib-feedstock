@@ -10,7 +10,10 @@ echo none /tmp usertemp binary,posix=0 0 0 >>%BUILD_PREFIX%\Library\etc\fstab
 
 set "GIR_PREFIX=%cd%\g-ir-prefix"
 
-call conda create -p %GIR_PREFIX% -y -c conda-forge -c defaults "python=%PY_VER%" g-ir-build-tools gobject-introspection glib "setuptools<71"
+@REM call conda create -p %GIR_PREFIX% -y -c conda-forge -c defaults "python=%PY_VER%" g-ir-build-tools gobject-introspection glib "setuptools<71"
+@REM if errorlevel 1 exit 1
+
+call conda create -p %GIR_PREFIX% -y "python=%PY_VER%" gobject-introspection glib "setuptools<71"
 if errorlevel 1 exit 1
 
 set "PYTHONPATH=%GIR_PREFIX%\Lib\site-packages;%PYTHONPATH%"
