@@ -30,7 +30,7 @@ source:
     # https://github.com/haikuports/haikuports/issues/1870
     # ERROR:../glib/tests/testing.c:307:test_fork_fail: code should not be reached Unknown TAP output lines have been ignored. 
     # Please open a feature request to implement them, or prefix them with a # if they are not TAP syntax.
-    - patches/0007-disable-test_fork_fail.patch  # [linux]
+    # - patches/0007-disable-test_fork_fail.patch  # [linux]
 
 build:
   number: 0
