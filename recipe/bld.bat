@@ -22,6 +22,11 @@ set "GIR_PY=3.12"
 call conda create -p %GIR_PREFIX% -y "python=%GIR_PY%" gobject-introspection glib setuptools
 if errorlevel 1 exit 1
 
+REM Patch g-ir-scanner's utils.py: os.add_dll_directory() rejects relative
+REM paths on Windows (e.g. '.'), so resolve them to absolute first.
+python -c "p=r'%GIR_PREFIX%\Library\lib\gobject-introspection\giscanner\utils.py'; t=open(p).read(); t=t.replace('os.add_dll_directory(path)','os.add_dll_directory(os.path.abspath(path))'); open(p,'w').write(t)"
+if errorlevel 1 exit 1
+
 set "PYTHONPATH=%GIR_PREFIX%\Lib\site-packages;%PYTHONPATH%"
 set "PATH=%GIR_PREFIX%\Library;%GIR_PREFIX%\Library\bin;%GIR_PREFIX%\Library\usr\bin;%PATH%"
 
