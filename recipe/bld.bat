@@ -19,7 +19,7 @@ REM To keep the build reliable and deterministic, we pin a known-good Python
 REM version (3.12) for the GIR build environment. The generated GIR/typelib
 REM artifacts are Python-version-independent and safe to use for all outputs.
 set "GIR_PY=3.12"
-call conda create -p %GIR_PREFIX% -y "python=%GIR_PY%" gobject-introspection glib "setuptools<71"
+call conda create -p %GIR_PREFIX% -y "python=%GIR_PY%" gobject-introspection glib "setuptools"
 if errorlevel 1 exit 1
 
 set "PYTHONPATH=%GIR_PREFIX%\Lib\site-packages;%PYTHONPATH%"
