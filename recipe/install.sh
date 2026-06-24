@@ -9,7 +9,7 @@ export PATH="${BUILD_PREFIX}/bin:${PATH}"
 export GIR_PREFIX="${SRC_DIR}/g-ir-prefix"
 
 if [[ ! -x "${GIR_PREFIX}/bin/g-ir-scanner" ]]; then
-  conda create -p "${GIR_PREFIX}" -y \
+  conda create -p "${GIR_PREFIX}" -c defaults -y \
     "python=${PY_VER}" gobject-introspection
 fi
 
