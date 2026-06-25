@@ -1,20 +1,5 @@
-set "GIR_PREFIX=%cd%\g-ir-prefix"
-
-REM _build_env is recreated before install scripts run, so recreate the GIR
-REM wrapper (see install.sh on Unix).
-> "%BUILD_PREFIX%\Scripts\g-ir-scanner.cmd" (
-  echo @ECHO OFF
-  echo "%GIR_PREFIX%\python.exe" "%GIR_PREFIX%\Library\bin\g-ir-scanner" %%*
-)
-
-python -c "import re,pathlib; pc=pathlib.Path(r'%GIR_PREFIX%\Library\lib\pkgconfig\gobject-introspection-1.0.pc'); w=pathlib.Path(r'%BUILD_PREFIX%\Scripts\g-ir-scanner.cmd').as_posix(); t=pc.read_text(); t=re.sub(r'^g_ir_scanner=.*$', 'g_ir_scanner='+w, t, flags=re.M); pc.write_text(t)"
-
-set "PYTHONPATH=%GIR_PREFIX%\Lib\site-packages;%PYTHONPATH%"
-set "PATH=%BUILD_PREFIX%\Scripts;%GIR_PREFIX%\Library;%GIR_PREFIX%\Library\bin;%GIR_PREFIX%\Library\usr\bin;%PATH%"
-FOR /F "delims=" %%i IN ('cygpath.exe -m "%LIBRARY_PREFIX%"') DO set "LIBRARY_PREFIX_M=%%i"
-FOR /F "delims=" %%i IN ('cygpath.exe -m "%GIR_PREFIX%"') DO set "GIR_PREFIX_M=%%i"
-set PKG_CONFIG_PATH=%LIBRARY_PREFIX_M%/lib/pkgconfig;%LIBRARY_PREFIX_M%/share/pkgconfig;%GIR_PREFIX_M%/Library/lib/pkgconfig
-
+REM bld.bat already configured introspection; --no-rebuild avoids Meson
+REM regenerate (which would re-probe g-ir-scanner after _build_env reload).
 cd forgebuild
 meson install --no-rebuild
 if errorlevel 1 exit 1
