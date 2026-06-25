@@ -36,6 +36,9 @@ if errorlevel 1 exit 1
   echo "%GIR_PREFIX%\python.exe" "%GIR_PREFIX%\Library\bin\g-ir-scanner" %%*
 )
 
+REM gnome.generate_gir() reads g_ir_scanner from pkg-config, not PATH.
+python -c "import re,pathlib; pc=pathlib.Path(r'%GIR_PREFIX%\Library\lib\pkgconfig\gobject-introspection-1.0.pc'); w=pathlib.Path(r'%BUILD_PREFIX%\Scripts\g-ir-scanner.cmd').as_posix(); t=pc.read_text(); t=re.sub(r'^g_ir_scanner=.*$', 'g_ir_scanner='+w, t, flags=re.M); pc.write_text(t)"
+
 set "PYTHONPATH=%GIR_PREFIX%\Lib\site-packages;%PYTHONPATH%"
 set "PATH=%BUILD_PREFIX%\Scripts;%GIR_PREFIX%\Library;%GIR_PREFIX%\Library\bin;%GIR_PREFIX%\Library\usr\bin;%PATH%"
 
