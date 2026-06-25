@@ -26,8 +26,18 @@ REM Patch g-ir-scanner's utils.py: os.add_dll_directory() rejects relative
 REM paths on Windows (e.g. '.'), so resolve them to absolute first.
 python -c "p=r'%GIR_PREFIX%\Library\lib\gobject-introspection\giscanner\utils.py'; t=open(p).read(); t=t.replace('os.add_dll_directory(path)','os.add_dll_directory(os.path.abspath(path))'); open(p,'w').write(t)"
 
+REM Meson prepends BUILD_PREFIX python when probing extensionless scripts on
+REM Windows. Delegate to the pinned GIR bootstrap python (see build.sh on Unix).
+"%GIR_PREFIX%\python.exe" "%GIR_PREFIX%\Library\bin\g-ir-scanner" --version
+if errorlevel 1 exit 1
+
+> "%BUILD_PREFIX%\Scripts\g-ir-scanner.cmd" (
+  echo @ECHO OFF
+  echo "%GIR_PREFIX%\python.exe" "%GIR_PREFIX%\Library\bin\g-ir-scanner" %%*
+)
+
 set "PYTHONPATH=%GIR_PREFIX%\Lib\site-packages;%PYTHONPATH%"
-set "PATH=%GIR_PREFIX%\Library;%GIR_PREFIX%\Library\bin;%GIR_PREFIX%\Library\usr\bin;%PATH%"
+set "PATH=%BUILD_PREFIX%\Scripts;%GIR_PREFIX%\Library;%GIR_PREFIX%\Library\bin;%GIR_PREFIX%\Library\usr\bin;%PATH%"
 
 mkdir forgebuild
 cd forgebuild
