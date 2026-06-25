@@ -2,45 +2,10 @@
 
 set -ex
 
-# Put it first, so any subprocesses also see it
-export PATH="${BUILD_PREFIX}/bin:${PATH}"
-
-# Bootstrap gobject-introspection tools (without touching meta.yaml)
-export GIR_PREFIX="${SRC_DIR}/g-ir-prefix"
-
-if [[ ! -x "${GIR_PREFIX}/bin/g-ir-scanner" ]]; then
-  conda create -p "${GIR_PREFIX}" -c defaults -y \
-    "python=${PY_VER}" gobject-introspection
-fi
-
-# Make g-ir-scanner available in PATH (Meson looking it there)
-mkdir -p "${BUILD_PREFIX}/bin"
-cat > "${BUILD_PREFIX}/bin/g-ir-scanner" <<'EOF'
-#!/usr/bin/env bash
-exec "${GIR_PREFIX}/bin/g-ir-scanner" "$@"
-EOF
-chmod +x "${BUILD_PREFIX}/bin/g-ir-scanner"
-
-export PATH="${BUILD_PREFIX}/bin:${PATH}"
-
-# For Meson to help find gobject-introspection-1.0.pc
-export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig:${PREFIX}/share/pkgconfig:${PKG_CONFIG_PATH:-}"
-if [[ -d "${GIR_PREFIX}/lib/pkgconfig" ]]; then
-  export PKG_CONFIG_PATH="${GIR_PREFIX}/lib/pkgconfig:${PKG_CONFIG_PATH}"
-fi
-
-# DEBUG
-# echo "PKG_CONFIG=$PKG_CONFIG"
-# $PKG_CONFIG --version
-# $PKG_CONFIG --modversion gobject-introspection-1.0 || true
-# $PKG_CONFIG --variable=g_ir_scanner gobject-introspection-1.0 || true
-# which g-ir-scanner
-# g-ir-scanner --version
-
-unset _CONDA_PYTHON_SYSCONFIGDATA_NAME
-
+# build.sh already configured introspection; --no-rebuild avoids Meson
+# regenerate during split-package install.
 cd builddir
-ninja install || (cat meson-logs/meson-log.txt; false)
+meson install --no-rebuild || (cat meson-logs/meson-log.txt; false)
 # remove libtool files
 find $PREFIX -name '*.la' -delete
 
