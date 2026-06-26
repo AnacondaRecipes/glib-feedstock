@@ -24,12 +24,12 @@ def patch_scanner_utils(gir_prefix: pathlib.Path) -> None:
         gir_prefix
         / "Library/lib/gobject-introspection/giscanner/utils.py"
     )
-    text = utils_py.read_text()
-    text = text.replace(
-        "os.add_dll_directory(path)",
-        "os.add_dll_directory(os.path.abspath(path))",
-    )
-    utils_py.write_text(text)
+    text = utils_py.read_text(encoding="utf-8")
+    old = "os.add_dll_directory(path)"
+    new = "os.add_dll_directory(os.path.abspath(path))"
+    if old not in text:
+        raise RuntimeError(f"Expected patch target not found in {utils_py}")
+    utils_py.write_text(text.replace(old, new), encoding="utf-8")
 
 
 def install_pc_override(gir_prefix: pathlib.Path, build_prefix: pathlib.Path) -> None:
