@@ -29,7 +29,7 @@ source:
     - patches/0006-Skip-flaky-tests-on-linux-CI.patch  # [linux]
 
 build:
-  number: 0
+  number: 1
   # Keep in sync with
   # https://gitlab.gnome.org/GNOME/glib/-/blob/2.84.2/meson.build?ref_type=tags#L2503
   skip: True  # [py<37]
@@ -54,7 +54,7 @@ requirements:
     - gettext {{ gettext }}  # [osx]
     - zlib {{ zlib }}
     - pcre2 {{ pcre2 }}
-    - libiconv 1.16
+    - libiconv {{ libiconv }}
   run:
     - python
     # run-dep as a workaround for now; upstream package still imports from distutils
@@ -83,7 +83,7 @@ outputs:
         - gettext {{ gettext }}  # [osx]
         - zlib {{ zlib }}
         - pcre2 {{ pcre2 }}
-        - libiconv
+        - libiconv {{ libiconv }}
       run:
         - gettext >=0.21.0,<1.0a0  # [osx]
         # bounds through run_exports

@@ -1,5 +1,7 @@
+REM bld.bat already configured introspection; --no-rebuild avoids Meson
+REM regenerate (which would re-probe g-ir-scanner after _build_env reload).
 cd forgebuild
-ninja install
+meson install --no-rebuild
 if errorlevel 1 exit 1
 
 if NOT [%PKG_NAME%] == [glib] (

@@ -22,7 +22,7 @@ if [[ -n "${build_platform:-}" ]]; then
   export CONDA_SUBDIR="${build_platform}"
 fi
 
-conda create -p "$GIR_PREFIX" -y \
+conda create -p "$GIR_PREFIX" -c defaults -y \
   "python=${PY_VER}" \
   gobject-introspection
 
