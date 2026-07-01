@@ -1,4 +1,7 @@
 # 4 hours timeout for Windows build (default is 2 hours)
-task_timeout: 14400# the conda-build parameters to use for disabling --skip-existing
+task_timeout: 14400
+
+# the conda-build parameters to use for disabling --skip-existing
 build_parameters:
   - "--suppress-variables"
+  - "--skip-existing"
