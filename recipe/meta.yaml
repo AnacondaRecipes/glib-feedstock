@@ -103,8 +103,6 @@ outputs:
         - test -f ${PREFIX}/lib/pkgconfig/glib-2.0.pc  # [unix]
         - if not exist "%LIBRARY_LIB%\\pkgconfig\\glib-2.0.pc" exit 1  # [win]
         - findstr /C:"-lintl" "%LIBRARY_LIB%\\pkgconfig\\*.pc" >nul && exit /B 1 || exit /B 0  # [win]
-        - findstr /C:"includedir}/glib-2.0" "%LIBRARY_LIB%\\pkgconfig\\glib-2.0.pc" >nul && exit /B 1 || exit /B 0  # [win]
-        - if exist "%LIBRARY_LIB%\\pkgconfig\\gio-windows-2.0.pc" exit /B 1  # [win]
         - test -f ${PREFIX}/etc/conda/activate.d/libglib_activate.sh  # [not win]
         - test -f ${PREFIX}/etc/conda/deactivate.d/libglib_deactivate.sh  # [not win]
         # Introspection test

@@ -53,10 +53,7 @@ if NOT [%PKG_NAME%] == [glib] (
 )
 
 @REM intl.lib is statically linked on Windows; do not advertise -lintl in .pc files.
-@REM For libglib/glib-tools, also drop .pc variables that reference pruned dev files.
-set "FIX_PC_ARGS="
-if NOT [%PKG_NAME%] == [glib] set "FIX_PC_ARGS=--trim-runtime"
-python %RECIPE_DIR%\scripts\fix-pkgconfig.py %LIBRARY_PREFIX% %FIX_PC_ARGS%
+python %RECIPE_DIR%\scripts\fix-pkgconfig.py %LIBRARY_PREFIX%
 if errorlevel 1 exit 1
 
 rem We don't have bash as a dependency so these shouldn't exist, but
