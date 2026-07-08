@@ -41,16 +41,6 @@ if NOT [%PKG_NAME%] == [glib] (
 
   rmdir /s /q %LIBRARY_PREFIX%\lib\glib-2.0\include
   if errorlevel 1 exit 1
-  del %LIBRARY_PREFIX%\lib\pkgconfig\gio-*
-  if errorlevel 1 exit 1
-  del %LIBRARY_PREFIX%\lib\pkgconfig\glib-*
-  if errorlevel 1 exit 1
-  del %LIBRARY_PREFIX%\lib\pkgconfig\gmodule-*
-  if errorlevel 1 exit 1
-  del %LIBRARY_PREFIX%\lib\pkgconfig\gobject-*
-  if errorlevel 1 exit 1
-  del %LIBRARY_PREFIX%\lib\pkgconfig\gthread-*
-  if errorlevel 1 exit 1
 
   del %LIBRARY_PREFIX%\share\aclocal\glib-*
   if errorlevel 1 exit 1
@@ -61,6 +51,10 @@ if NOT [%PKG_NAME%] == [glib] (
   rmdir /s /q %LIBRARY_PREFIX%\share\glib-2.0
   if errorlevel 1 exit 1
 )
+
+@REM intl.lib is statically linked on Windows; do not advertise -lintl in .pc files.
+python %RECIPE_DIR%\scripts\fix-pkgconfig.py %LIBRARY_PREFIX%
+if errorlevel 1 exit 1
 
 rem We don't have bash as a dependency so these shouldn't exist, but
 rem sometimes a system bash will be picked up and they will get installed.
