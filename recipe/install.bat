@@ -52,10 +52,6 @@ if NOT [%PKG_NAME%] == [glib] (
   if errorlevel 1 exit 1
 )
 
-@REM intl.lib is statically linked on Windows; do not advertise -lintl in .pc files.
-python %RECIPE_DIR%\scripts\fix-pkgconfig.py %LIBRARY_PREFIX%
-if errorlevel 1 exit 1
-
 rem We don't have bash as a dependency so these shouldn't exist, but
 rem sometimes a system bash will be picked up and they will get installed.
 rem Just delete them, but don't check for errors in case they do not exist.
