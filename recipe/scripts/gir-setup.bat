@@ -5,7 +5,7 @@
 @REM gobject-introspection-1.0.pc under BUILD_PREFIX, and prepend that to
 @REM PKG_CONFIG_PATH (see build.sh / install.sh on Unix).
 @REM
-@REM Sets: PATH, PYTHONPATH, GIR_PKG_CONFIG_PATH
+@REM Sets: PATH, PYTHONPATH, LIB, GIR_PKG_CONFIG_PATH
 
 set "GIR_PREFIX=%cd%\g-ir-prefix"
 set "GIR_PY=3.12"
@@ -23,6 +23,9 @@ if errorlevel 1 exit /b 1
 
 set "PYTHONPATH=%GIR_PREFIX%\Lib\site-packages;%PYTHONPATH%"
 set "PATH=%BUILD_PREFIX%\Scripts;%GIR_PREFIX%\Library;%GIR_PREFIX%\Library\bin;%GIR_PREFIX%\Library\usr\bin;%PATH%"
+@REM g-ir-scanner links a temp .exe with -lgirepository-1.0 from the bootstrap env;
+@REM MSVC must search GIR_PREFIX\Library\lib (pkg-config -L is not always applied).
+set "LIB=%GIR_PREFIX%\Library\lib;%LIB%"
 
 FOR /F "delims=" %%i IN ('cygpath.exe -m "%GIR_PREFIX%"') DO set "GIR_PREFIX_M=%%i"
 FOR /F "delims=" %%i IN ('cygpath.exe -m "%BUILD_PREFIX%"') DO set "BUILD_PREFIX_M=%%i"
