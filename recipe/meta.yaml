@@ -188,6 +188,13 @@ about:
 
 extra:
   feedstock-name: glib
+  # False positives: glib ships C libraries/tools (command tests are correct),
+  # python/setuptools/meson are build-time tools, and the linter cannot render
+  # the major_minor jinja in the source URL.
+  skip-lints:
+    - missing_imports_or_run_test_py
+    - python_build_tools_in_host
+    - reachable_url
   recipe-maintainers:
     - ccordoba12
     - jakirkham
