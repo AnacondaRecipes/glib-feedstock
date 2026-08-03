@@ -1,4 +1,4 @@
-{% set version = "2.86.3" %}
+{% set version = "2.88.3" %}
 {% set major_minor = ".".join(version.split(".")[:2]) %}
 
 package:
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://download.gnome.org/sources/glib/{{ major_minor }}/glib-{{ version }}.tar.xz
-  sha256: b3211d8d34b9df5dca05787ef0ad5d7ca75dec998b970e1aab0001d229977c65
+  sha256: ab24d24e698dfa1e408b7bcdb508f4aafc906185a8b8ce72fdf79bbbdc9b383b
   patches:
     # Related to this patch https://bugzilla.gnome.org/show_bug.cgi?id=673135
     # However, it was rejected by upstream. Homebrew decided to keep their own
@@ -29,9 +29,9 @@ source:
     - patches/0006-Skip-flaky-tests-on-linux-CI.patch  # [linux]
 
 build:
-  number: 3
+  number: 0
   # Keep in sync with
-  # https://gitlab.gnome.org/GNOME/glib/-/blob/2.84.2/meson.build?ref_type=tags#L2503
+  # https://gitlab.gnome.org/GNOME/glib/-/blob/2.88.3/meson.build?ref_type=tags#L2526
   skip: True  # [py<37]
 
 requirements:
@@ -57,9 +57,6 @@ requirements:
     - libiconv {{ libiconv }}
   run:
     - python
-    # run-dep as a workaround for now; upstream package still imports from distutils
-    # imports distutils.msvccompiler which has been removed on recent setuptools
-    - setuptools <74  # [py>311]
 
 outputs:
   - name: libglib
