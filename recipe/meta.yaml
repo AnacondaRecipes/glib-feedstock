@@ -29,7 +29,7 @@ source:
     - patches/0006-Skip-flaky-tests-on-linux-CI.patch  # [linux]
 
 build:
-  number: 0
+  number: 1
   # Keep in sync with
   # https://gitlab.gnome.org/GNOME/glib/-/blob/2.88.3/meson.build?ref_type=tags#L2526
   skip: True  # [py<37]
